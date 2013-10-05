@@ -55,8 +55,8 @@ if __name__ == "__main__":
 # Abstract this eventually to make more DB options available
 def db_connect():
     config = {
-        'user': 'alexanderjfink',
-        'password': '17!@ai37#0',
+        'user': 'user',
+        'password': 'pass',
         'host': 'localhost',
         'database': 'uscensus',
         'raise_on_warnings': True,
