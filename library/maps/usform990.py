@@ -65,7 +65,7 @@ class USForm990:
 		print "Unpacking ..."
 
 		# This file downloads as a sql.gz, need to unpack it.
-		os.system("gzip -d ../" + file_name)
+		os.system("gzip -d " + file_name)
 		
 		# rename .sf1 data files to .csv
 		# consider replacing bash script w/python
