@@ -6,7 +6,7 @@ MINER_FILE_DIRECTORY=$(cd "$MINER_FILE_DIRECTORY" && pwd -P)
 
 # MINER_FILENAME=$(basename "$0")
 
-MINER_LIBRARY_DIRECTORY=$(cd "$MINER_FILE_DIRECTORY"/../Library && pwd -P)
+MINER_LIBRARY_DIRECTORY=$(cd "$MINER_FILE_DIRECTORY"/../lib && pwd -P)
 
 MINER_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
 
