@@ -3,31 +3,6 @@
 # HELPER FUNCTIONS #
 ####################
 
-# Function to connect to database
-# Abstract this eventually to make more DB options available
-def db_connect():
-    config = {
-        'user': 'specialuser',
-        'password': 'specialpass',
-        'host': 'localhost',
-        'database': 'uscensus',
-        'raise_on_warnings': True,
-    }
-    
-    from mysql.connector import errorcode
-    try:
-      cnx = mysql.connector.connect(**config)
-      return cnx
-    except mysql.connector.Error as err:
-      if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-        print("Something is wrong with your user name or password")
-      elif err.errno == errorcode.ER_BAD_DB_ERROR:
-        print("Database does not exist")
-      else:
-        print(err)
-    else:
-      cnx.close()
-
 # Test if string or #
 def is_number(s):
     try:

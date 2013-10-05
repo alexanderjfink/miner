@@ -1,4 +1,5 @@
-# miner map for U.S. Census data
+# miner map for U.S. Census 2010 database
+from miner import *
 
 class USCensus2010:
 	homepage = 'http://www.census.gov'
@@ -7,49 +8,45 @@ class USCensus2010:
 	# Should check whether args have been specified for download. In this case, we might have something like
 	# $miner extract uscensus --state=mn -- in this case, grab census data only for MN
 	def download():
+		## SERIES OF PLACEHOLDERS TO FIX FOR FINAL PROJECT ##
+		# PLACEHOLDER: Download SF1 datafiles
+		# PLACEHOLDER: Download 2003 Access Database from US Census (2003 b/c mdbtools can deal only w/Access JET3, 4
+		# PLACEHOLDER: Test whether mdbtools is installed and works
+		sys.exit()
 
 
 	# Place all unpacking functionality here. Unpacking should involve: 
 	#   unzipping files,
 	#   changing file names for consistency
 	def unpack():
+		# PLACEHOLDER: Unzip SF1 datafiles
+		# PLACEHOLDER: Create new database
+		# PLACEHOLDER: Build tables based on guide database 
+		
+		# rename .sf1 data files to .csv
+		# consider replacing bash script w/python
+		# run_script("rename 's/\.sf1$/\.csv/' *.sf1")
+		sys.exit()
 
 
 	# Place all installation functionality here. This involves:
 	#   pulling files and sending data to database api for insertion
-	def install():
-		########################
-		# END HELPER FUNCTIONS #
-		########################
-
-		## SERIES OF PLACEHOLDERS TO FIX FOR FINAL PROJECT ##
-		# PLACEHOLDER: Download SF1 datafiles
-		# PLACEHOLDER: Unzip SF1 datafiles
-		# PLACEHOLDER: Download 2003 Access Database from US Census (2003 b/c mdbtools can deal only w/Access JET3, 4
-		# PLACEHOLDER: Test whether mdbtools is installed and works
-
-		# PLACEHOLDER: Create new database
-		# PLACEHOLDER: Build tables based on guide database 
-		## END PLACEHOLDERS
-
+	def install(self):
 		#################################################################
-		# POPULATE DATA TABLES 						#
+		# POPULATE DATA TABLES 											#
 		# For this formulae, use all CSV files in downloaded sf1 folder #
 		#################################################################
 
-		# rename .sf1 data files to .csv
-		# consider replacing bash script w/python
-		run_script("rename 's/\.sf1$/\.csv/' *.sf1")
-
 		# open MySQL connection
-		cnx = db_connect()
+		db = DBConnect()
+		cnx = db.connect()
 
-		sqlstr = """load data local infile '/Users/afink/Desktop/mn000012010.csv' into table SF1_00001 
-		    columns terminated by ',' 
-			optionally enclosed by '"' 
-			escaped by '"' 
-			lines terminated by '\n'
-			(FILEID, STUSAB, CHARITER, CIFSN, LOGRECNO, P0010001);"""
+		# sqlstr = """load data local infile '/Users/afink/Desktop/mn000012010.csv' into table SF1_00001 
+		#     columns terminated by ',' 
+		# 	optionally enclosed by '"' 
+		# 	escaped by '"' 
+		# 	lines terminated by '\n'
+		# 	(FILEID, STUSAB, CHARITER, CIFSN, LOGRECNO, P0010001);"""
 
 		# for each CSV file 
 		# match csv file name to table
@@ -59,7 +56,7 @@ class USCensus2010:
 
 		cursor = cnx.cursor()
 
-		os.chdir("./")
+		os.chdir("./tmp/mn2010.sf1/")
 		for files in glob.glob("*.csv"):
 
 		    #GENERAL INSERT SQL
