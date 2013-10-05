@@ -17,7 +17,6 @@ miner & dat
 What is the difference between miner and [dat](https://github.com/maxogden/dat "dat on GitHub")? We don't see ourselves as competitors. Rather, we are working on parallel and complementary projects. Here are what we see as differences:
 
 - miner focuses on using a formula (map) to get raw data files straight from original sources, download, and process them. dat is focused on building collaborative and version controlled datasets.
-- Some data like the US Census has unique identifiers stripped across tablesand is more difficult to turn into a key/value store.
 - While miner is in early development, it will be fully operational quickly and aims to be a very small application. dat is still in heavy early development and aims to be a much more robust and comprehensive data collaboration tool. 
 - Cleaned data (as dat would allow the sharing of) is great for software projects! However, researchers often need raw datasets to choose cleaning methods and ensure quality. 
 - Some data is public but not yet copyleft/open--downloading your own copy is the only legal way to use it. Shared repositories may be allowed privately, but would be difficult to get permission for publicly.
