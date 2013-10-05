@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Set primary file directory
+MINER_FILE_DIRECTORY=$(dirname "$0")
+MINER_FILE_DIRECTORY=$(cd "$MINER_FILE_DIRECTORY" && pwd -P)
+
+# MINER_FILENAME=$(basename "$0")
+
+MINER_LIBRARY_DIRECTORY=$(cd "$MINER_FILE_DIRECTORY"/../Library && pwd -P)
+
+MINER_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
+
+# Execute python file that does main lifting, send it system args
+exec python2.7 "$MINER_LIBRARY_DIRECTORY/miner.py" "$@"
+
