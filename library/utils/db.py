@@ -12,9 +12,9 @@ class DBConnect:
           'user': 'specialuser',
           'password': 'specialpass',
           'host': 'localhost',
-          'database': 'uscensus',
-          'raise_on_warnings': True,
+          'raise_on_warnings': False,
       }
+
 
       #try:
       db = dbapi2.connect(**config)

@@ -41,8 +41,18 @@ class USCensus2010:
 		#################################################################
 
 		# open MySQL connection
+		# open MySQL connection
 		db = DBConnect()
 		cnx = db.connect()
+
+		# Create cursor
+		cursor = cnx.cursor()
+
+		# Create database if it isn't there already
+		cursor.execute("DROP DATABASE IF EXISTS uscensus2010;")
+		cursor.execute("CREATE DATABASE IF NOT EXISTS uscensus2010;")
+		cursor.execute("USE uscensus2010;")
+		cnx.commit()
 
 		# sqlstr = """load data local infile '/Users/afink/Desktop/mn000012010.csv' into table SF1_00001 
 		#     columns terminated by ',' 
