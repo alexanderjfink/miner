@@ -4,10 +4,6 @@
 # MINER
 # Dependencies: mdbtools, mysql (goal to move to any database), rename
  
-# MIT License
-# Name inspired by homebrew for Mac OS X 
-# Project Goal: Automate the download, liberation, and "installation" of online but difficult to access data and open data 
-
 import glob, os, csv, sys, getopt
 from library.utils.helpers import *
 from library.utils.db import *
@@ -16,25 +12,12 @@ from library.maps.uscensus import *
 
 def main(argv):
 
-    # parser = argparse.ArgumentParser(description="Use $miner --help for usage details")
-    # parser.add_argument("-h", "--h", "-help", "--help")
-    # parser.add_argument("-extract", "--extract")
-    # args = parser.parse_args()
-
-    # for arg in args:
-    #     if arg in ("-h", "--h", "-help", "--help"):
-    #         print "Usage:\n" +\
-    #                 "  miner -search DATASET\n" +\
-    #                 "  miner -assay DATASET (tell more about a dataset)\n" +\
-    #                 "  miner -extract DATASET [--options]\n"
-    #         sys.exit()
-
-    #     elif opt in ("-extract"):
-    #         proc = USCensus2010
-    #         proc.install() 
+    maps = {
+        'uscensus2010': USCensus2010,
+    }
 
     try:
-        opts, args = getopt.getopt(argv,"he:", ["help","extract"])
+        opts, args = getopt.getopt(argv,"he:a:s:", ["help","extract=","assay=","search="])
     except getopt.GetoptError:
         print "Usage: $miner [args]\nCheck help for more details."
         sys.exit()
@@ -42,29 +25,33 @@ def main(argv):
     for opt, arg in opts:
         if opt in ("-h", "--h", "-help", "--help"):
             print "Usage:\n" +\
-                    "  miner -search DATASET\n" +\
-                    "  miner -assay DATASET (tell more about a dataset)\n" +\
-                    "  miner -extract DATASET [--options]\n"
+                    "  miner -s DATASET (search) \n" +\
+                    "  miner -a DATASET (tell more about a dataset)\n" +\
+                    "  miner -e DATASET [--options] (extract dataset)\n"
             sys.exit()
 
-        elif opt in ("-extract"):
-            proc = USCensus2010()
-            proc.install() 
+        elif opt in ("-e"):
+            try:
+                proc = maps[arg]()
+                proc.install() 
+            except KeyError:
+                print "Can't find dataset. Try miner -s DATASET"
+
+
+        elif opt in ("-a"):
+            try:
+                proc = maps[arg]()
+                print proc.description
+                print proc.homepage
+            except KeyError:
+                print "Can't find dataset. Try miner -s DATASET"
+
+        elif opt in ("-s"):
+            try:
+                proc = maps[arg]()
+            except KeyError:
+                print "Dataset does not exist. Add it by visiting http://www.github.com/alexanderjfink/miner"
 
 if __name__ == "__main__":
    main(sys.argv[1:])
-
-#from time import sleep  
-#from random import random  
-#from clint.textui import progress  
-#if __name__ == '__main__':
-#    for i in progress.bar(range(100)):
-#        sleep(random() * 0.2)
-
-#    for i in progress.dots(range(100)):
-#        sleep(random() * 0.2)
-
-
-#from clint.textui import colored
-#print colored.green("HELLO BASH")
 

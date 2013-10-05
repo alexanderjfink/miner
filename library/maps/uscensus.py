@@ -1,8 +1,11 @@
-# miner map for U.S. Census 2010 database
+# miner map for U.S. Census 2010 Minnesota database
+
 from miner import *
 
 class USCensus2010:
+	description = 'Data from the 2010 Dicennial US Census.'
 	homepage = 'http://www.census.gov'
+
 
 	# Place all download functionality in here, should download files to a standard download directory
 	# Should check whether args have been specified for download. In this case, we might have something like
@@ -82,8 +85,7 @@ class USCensus2010:
 		            
 		            query = add_csv_file % csv_info
 		            
-		            if (debug):
-		                print query
+		            print query
 		            
 		            cursor.execute(query)
 		            
