@@ -9,13 +9,17 @@ from library.utils.helpers import *
 from library.utils.db import *
 from library.maps.uscensus import *
 from library.maps.usform990 import *
+from library.maps.nycpolicepenalties import *
 
 
 def main(argv):
 
+    # dict of existing maps
+    # maps must be here in order to work
     maps = {
         'uscensus2010': USCensus2010,
         'usform990': USForm990,
+        'nycpolicepenalties': NYCPolicePenalties,
     }
 
     try:
