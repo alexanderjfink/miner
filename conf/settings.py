@@ -11,6 +11,7 @@ conf = {
 		'username': 'specialuser',
 		'password': 'specialpass',
 		'hostname': 'localhost',
+		'database_prefix': 'miner_',
 	},
 
 	'nosql_database': {
