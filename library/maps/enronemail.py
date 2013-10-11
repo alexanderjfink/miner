@@ -1,5 +1,7 @@
-# miner map for Enron Emails
-# Released publicly by CitizenAudit
+"""
+miner map for Enron Emails
+Data is released publicly by CitizenAudit
+"""
 
 from miner import *
 import urllib2, gzip, re

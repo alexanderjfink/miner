@@ -1,5 +1,7 @@
-# miner map for Medicare Official Hospital Compare data
-# Released publicly by data.Medicare.gov
+"""
+miner map for Medicare Official Hospital Compare data
+Data is released publicly by data.Medicare.gov
+"""
 
 from miner import *
 import urllib2, gzip, re

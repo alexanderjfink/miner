@@ -1,6 +1,8 @@
-# The basic form of a Map...
-# Should be general enough that it can fit all maps (unless there seems good reason to ignore this)
-# Should be specific enough that it does a lot of the heavy lifting for Maps
+"""
+The basic form of a Map...
+Should be general enough that it can fit all maps (unless there seems good reason to ignore this)
+Should be specific enough that it does a lot of the heavy lifting for Maps
+"""
 
 class Map:
 
@@ -19,19 +21,27 @@ class Map:
 	# URLs for the data dictionaries
 	dictionary = []
 
+	# type of database to install ('docstore','sql','keyvalue')
+	database_type = ''
+
 	# Methods internal to Maps class
 
-	# Check if Map is already installed somewhere
 	def is_installed(self, map):
-		sys.exit()
+		"""
+		Check if Map is already installed somewhere
+		"""
+		pass
 
 	# These are the main methods used by maps
 	def download(self):
-		sys.exit()
+		pass
 
 	def unpack(self):
-		sys.exit()
+		pass
 
 	def install(self):
-		sys.exit()
+		pass
+
+	def cleanup(self):
+		pass
 	

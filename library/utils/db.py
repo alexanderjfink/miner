@@ -1,6 +1,6 @@
-#########################
-# DATABASE ABSTRACTIONS #
-#########################
+"""
+DATABASE ABSTRACTIONS
+"""
 
 import mysql.connector as dbapi2
 

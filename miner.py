@@ -1,8 +1,12 @@
 #!/usr/bin/env python2.7
 # Remember to change "python 2.7" to "python" -- this shouldn't be based on old version of Python
 
-# MINER
-# Dependencies: mdbtools, mysql (goal to move to any database), rename
+"""
+MINER
+Dependencies: mdbtools, mysql (goal to move to any database), rename (update list)
+
+Test Dependencies: nose
+"""
  
 import glob, os, csv, sys, getopt
 from library.utils.helpers import *
@@ -29,6 +33,8 @@ def main(argv):
         sys.exit()
 
     for opt, arg in opts:
+        # Should I switch this to a dictionary switching model from Learning Python?
+
         if opt in ("-h", "--h", "-help", "--help"):
             print "Usage:\n" +\
                     "  miner -s DATASET (search) \n" +\

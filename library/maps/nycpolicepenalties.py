@@ -1,5 +1,7 @@
-# miner map for NYC Police Department Penalties data
-# Released publicly by the City of New York
+""" 
+miner map for NYC Police Department Penalties data
+Data is released publicly by the City of New York
+"""
 
 from miner import *
 import urllib2, gzip, re

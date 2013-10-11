@@ -1,4 +1,6 @@
-# miner map for U.S. Census 2010 Minnesota database
+""" 
+miner map for U.S. Census 2010 Minnesota database
+"""
 
 from miner import *
 
@@ -82,7 +84,7 @@ class USCensus2010:
 		        spamreader = csv.reader(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
 		        for row in spamreader:
 		    
-		    
+		    		# basic detection of whether this should be treated as a string or not...
 		            csv_row = []
 		            for r in row:
 		                csv_row.append(is_number(r))    

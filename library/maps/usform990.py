@@ -1,5 +1,7 @@
-# miner map for US Non-Profit Form 990 data
-# Released publicly by CitizenAudit
+"""
+miner map for US Non-Profit Form 990 data
+Data is released publicly by CitizenAudit
+"""
 
 from miner import *
 import urllib2, gzip, re
