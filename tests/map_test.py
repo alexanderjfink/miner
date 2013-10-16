@@ -12,21 +12,30 @@ class TestSQLMap():
 	"""
 	def setUp(self):
 		""" Create a fake dataset to use to insert """
+
 		pass
 
-	def download_test(self):
+	def is_installed_test(self):
+		""" Should pass if this is already installed in standard area """
+		pass
+
+	def test_setup(self):
+		""" Should pass if directory is created in TEMP and if OS is pointed to that directory """
+
+
+	def test_download(self):
 		""" Should pass if download completes and dataset resides in tmp/ """
 		pass
 
-	def unpack_test(self):
+	def test_unpack(self):
 		""" Should pass if files exist on disk """
 		pass
 
-	def install_test(self):
+	def test_install(self):
 		""" Should pass if data gets inserted into SQL database """
 		pass
 
-	def cleanup_test(self):
+	def test_cleanup(self):
 		""" Should pass if data created in download & unpack is deleted """
 		pass
 

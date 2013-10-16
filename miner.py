@@ -48,6 +48,9 @@ def main(argv):
             # - download -- download the data from a server
             # - unpack -- unzip the data and clean it
             # - install -- send it to the configured database
+
+            # need some **kwargs
+            # install_location
             try:
                 proc = maps[arg]()
                 file_name = proc.download()

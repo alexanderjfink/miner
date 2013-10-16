@@ -44,8 +44,12 @@ DATABASES = {
 			'DB_PREFIX': 'miner_', # If DB_PREFIX isn't set, no prefix will be used
 		},
 
-		'nosql': {
+		'docstore': {
 			'TYPE': 'hadoop',
+		},
+
+		'keyvalue': {
+			'TYPE': 'redis',
 		}
 	}
 

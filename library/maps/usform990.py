@@ -6,7 +6,7 @@ Data is released publicly by CitizenAudit
 from miner import *
 import urllib2, gzip, re
 
-class USForm990:
+class USForm990(Map):
 	description = 'US Non-Profit Form 990 Tax information released by CitizenAudit'
 	homepage = 'http://www.citizenaudit.org'
 
