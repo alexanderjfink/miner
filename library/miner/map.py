@@ -5,8 +5,9 @@ Should be specific enough that it does a lot of the heavy lifting for Maps
 """
 
 import messy2sql
-import gzip, re, os
-from helpers import download_file
+import re, os
+from library.utils.helpers import download_file, unpack_tar, unpack_gzip, unpack_zip, guess_extension
+from library.utils.db import DBConnect
 
 
 class Map:
@@ -64,16 +65,18 @@ class Map:
 		cursor = cnx.cursor()
 
 		# Create database if it isn't there already
-		cursor.execute(("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s';" % self.db_name))
+		return cursor.execute(("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s';" % self.db_name))
 		
 
 	def setup(self):
+		""" Need to prep by creating a folder and changing the system into that directory """
+
 		# make directory for this in temp dir + name_of_map
 		# switch to this directory
 		os.chdir('./tmp')
 
 		try:
-			os.makedirs(self.__name__)
+			os.mkdir(self.__name__)
 		except OSError:
 			print "Directory already exists for this file..."
 
@@ -83,6 +86,13 @@ class Map:
 		# commit query
 
 	def download(self):
+		"""
+		Using data dictionary of urls, grab the files and display a nice progress bar while doing it
+		"""
+
+		if global VERBOSE:
+			print "Downloading data files..."
+
 		# need an iterator to download what is either a single page or a load of files, but that should get specified.
 		# this should be the easiest one to write
 		for url in urls:
@@ -94,9 +104,36 @@ class Map:
 		
 
 	def unpack(self):
-		# unpack the downloads into the root directory for this map
+		"""
+		Unpack the downloads into the root directory for this map
+		"""
 
-		pass
+		if global VERBOSE:
+			print "Unpacking data files to disk..."
+
+		# need to check what file type we've got now...
+		file_types = {
+			'csv': pass,
+			'sql': pass,
+			'tar': unpack_tar,
+			'gz': unpack_gzip,
+			'tgz': unpack_tar,
+			'tar.gz': unpack_tar,
+			'zip': unpack_zip,
+		}
+
+		# get all files in working directory of this map
+		files = os.listdir('./')
+
+		# iterate through files
+		for f in files:
+			file_name = os.path.basename(f)
+
+			# using file type, extract this file!
+			file_types[guess_extension(file_name)](os.path.basename(f))
+
+
+
 
 	def install(self):
 		# base install for a sql file should be to just read each file in directory with messytables and then insert it into table
@@ -112,8 +149,15 @@ class Map:
 		# run & commit query
 
 	def cleanup(self):
-		# close DB connection
-		# need to delete all the files in tmp/thismap
 
-		pass
+		if global VERBOSE:
+			print "Cleaning up folders and closing DB connections..."
+		
+		# need to delete all the files in tmp/thismap
+		os.chdir('../')
+		os.rmdir(self.__name__)
+
+		# close DB connection
+		cursor.close()
+		cnx.close()
 	

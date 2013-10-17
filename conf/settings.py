@@ -15,6 +15,9 @@ However, at this point, the user will need to update these themself.
 # CORE SETTINGS #
 #################
 
+# VERBOSE							should we display verbose-ness?
+VERBOSE = True
+
 # debug								should debug information be displayed?
 DEBUG = True
 

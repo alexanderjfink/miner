@@ -2,6 +2,8 @@
 Setup universal package tests with nose
 """
 
+from conf.settings import *
+
 import nose
 
 csv_test_file = ""

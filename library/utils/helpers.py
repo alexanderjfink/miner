@@ -9,7 +9,6 @@ Each of these functions has corresponding tests in tests/helpers_test.py
 """
 
 import os, csv, sys, optparse
-from conf.settings import *
 # from messytables import StringType, IntegerType, DateType, \
 #         CSVTableSet, type_guess, \
 #         types_processor, headers_guess, headers_processor, \
@@ -18,6 +17,7 @@ from conf.settings import *
 import messytables
 import messy2sql
 import urllib2
+import zipfile, tarfile
 
 def download_file(url, with_progress_bar=True):
     """ Download file and display progress bar """
@@ -49,6 +49,39 @@ def download_file(url, with_progress_bar=True):
                 print status,
 
         f.close()
+
+def unpack_tar(filename):
+    """ Take a filename, assume correct OS location """
+    # open the tar file
+    tfile = tarfile.open(filename)
+     
+    if tarfile.is_tarfile(filename):
+        # extract all contents
+        tfile.extractall('.')
+
+def unpack_gzip(filename):
+    """ Take a filename, assume correct OS location """
+
+    os.system("gzip -d " + filename)
+
+def unpack_zip(filename):
+    """ Take a zipfile, assume correct OS location """
+    zipfile.extractall(filename)
+
+def guess_extension(filename):
+    """
+    Guess the extension of given filename.
+    From: http://stackoverflow.com/a/9428460/1608991
+    """
+
+    DOUBLE_EXTENSIONS = ['tar.gz','tar.bz2'] # Add extra extensions where desired.
+
+
+    root,ext = os.path.splitext(filename)
+    if any([filename.endswith(x) for x in DOUBLE_EXTENSIONS]):
+        root, first_ext = os.path.splitext(root)
+        ext = first_ext + ext
+    return root, ext
 
 # Test if string or #
 def is_number(s):
