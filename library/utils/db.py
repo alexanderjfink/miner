@@ -7,18 +7,19 @@ import mysql.connector as dbapi2
 class DBConnect: 
   # Function to connect to database
   # Abstract this eventually to make more DB options available
-  def connect(self):
+  def __init__(self):
+
     config = {
-      'user': 'specialuser',
-      'password': 'specialpass',
-      'host': 'localhost',
+      'user': DATABASES['sql'].USERNAME,
+      'password': DATABASES['sql'].PASSWORD,
+      'host': DATABASES['sql'].HOSTNAME,
       'raise_on_warnings': False,
     }
 
 
     #try:
-    db = dbapi2.connect(**config)
-    return db
+    self.db = dbapi2.connect(**config)
+    return self.db
     
     ## NEED TO FIX ERROR HANDLING HERE
 
@@ -47,5 +48,24 @@ class DBConnect:
     # else:
     #   cnx.close()
 
-  def insert(db_name=None, table_name=None, values=None, query=None):
+  def create_db():
     pass
+
+  def create_table(db_name=None, table_name=None, query=None):
+    if query:
+      self.db.execute(query)
+    else:
+      pass
+
+  def insert(db_name=None, table_name=None, values=None, query=None):
+
+    if query:
+      # if here, we've been sent a pre-prepared query
+      self.db.execute(query)
+    else:
+      # if here, we didn't get a query to run, so do what we need to...
+
+
+  def commit():
+    self.cursor.commit()
+    self.cursor.close()

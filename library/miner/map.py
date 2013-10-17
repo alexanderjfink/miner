@@ -59,10 +59,9 @@ class Map:
 
 		# open MySQL connection
 		db = DBConnect()
-		cnx = db.connect()
 
 		# Create cursor
-		cursor = cnx.cursor()
+		cursor = db.cursor()
 
 		# Create database if it isn't there already
 		return cursor.execute(("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s';" % self.db_name))
@@ -154,22 +153,37 @@ class Map:
 			  of configuration for a Map?
 		"""
 
+		# for every file
+		files = os.listdir('./')
 
+		for f in files:
+			file_name = os.path.basename(f)
+			root, ext = guess_extension(file_name)
+			
+			if ext == "sql":
+				# if we have a SQL file, we should run that
+				db.create_table()
+				db.insert()
 
-		# if we have a SQL file, we should run that
-		
+			elif ext in ("csv", "pdf", "xlsx", "html"):	
+				# create messy2sql instance
+				m2s = Messy2SQL(file_name, DATABASES['sql'].TYPE)
+				# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
+				# get a table query, run it!
+				
+				# use messytables to build a MessyTables CSV
+				rows = CSVTableSet(file_name).tables[0]
 
+				# use the rowset here to create a sql table query and execute
+				db.create_table(query = m2s.create_sql_table(rows))
 
-		# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
-		# get a table query, run it!
-		m2s.create_sql_table(rows)
+				# get insert statements
+				db.insert(query = m2s.create_sql_insert(rows))
 
-		# run & commit query
-
-		# get insert statements
-		m2s.create_sql_insert(rows)
-
-		# run & commit query
+				# and finally, commit
+				db.commit()
+			else:
+				pass
 
 	def cleanup(self):
 
