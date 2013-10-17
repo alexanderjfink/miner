@@ -13,42 +13,43 @@ from library.utils.db import DBConnect
 class Map:
 	# Methods internal to Maps class
 
-	def __init__(self, homepage, urls, db_type, mirror=None, sha1=None, dictionary=None, db_name=None):
-		# URL for homepage of dataset (e.g. http://census.gov/)
-		self.homepage = homepage
+	# These are here rather than in __init__ so that subclasses can simply define each of these
+	# within the subclass maps
+	
+	# URL for homepage of dataset (e.g. http://census.gov/)
+	homepage = ''
 
-		# Specific URLs for the dataset downloads
-		# needs to be a dictionary ala
-		# urls = {'census1': 'http://www.census.gov/census1.zip', 'census2':'http://www.census.gov/census2.zip'}
-		self.url = urls
+	description = ''
+
+	# Specific URLs for the dataset downloads
+	# needs to be a dictionary ala
+	# data = {'census1': {url: 'http://www.census.gov/census1.zip', mirror: '', sha1: '', dictionary: ''}}
+	data = {}
+
+	# type of database to install e.g. 'docstore','sql','keyvalue'
+	# see conf/settings.py for available databases
+	db_type = 'sql'
+
+	db_name = ''
 
 
-		# type of database to install e.g. 'docstore','sql','keyvalue'
-		# see conf/settings.py for available databases
-		self.db_type = db_type
+	def __init__(self, mirrors=None, sha1=None, dictionary=None, db_name=None):
 
 		# Mirror in case this dataset goes down
 		if mirror:
 			self.mirror = mirror
-		else:
-			self.mirror = []
 
 		# sha1 checksum for dataset download
 		if sha1:
 			self.sha1 = sha1
-		else:
-			self.sha1 = []
 
 		# URLs for the data dictionaries
 		if dictionary:
 			self.dictionary = dictionary
-		else:
-			self.dictionary = []
 
+		# specific database name specified
 		if db_name:
 			self.db_name = db_name
-		else:
-			self.db_name = self.__name__
 
 
 	def __is_installed(self):
@@ -97,8 +98,8 @@ class Map:
 
 		# need an iterator to download what is either a single page or a load of files, but that should get specified.
 		# this should be the easiest one to write
-		for url in urls:
-			download_file(url, with_progress_bar=True)
+		for url in data:
+			download_file(url.url, with_progress_bar=True)
 
 		# use a messy2sql because we'll need it
 		# eventually this can be part of an IF import -- we only need it if we are doing SQL
