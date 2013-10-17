@@ -70,6 +70,9 @@ class Map:
 
 	def setup(self):
 		""" Need to prep by creating a folder and changing the system into that directory """
+		
+		if global VERBOSE:
+			print "Initializing temporary working directory..."
 
 		# make directory for this in temp dir + name_of_map
 		# switch to this directory
@@ -115,6 +118,10 @@ class Map:
 		file_types = {
 			'csv': pass,
 			'sql': pass,
+			'xls': pass,
+			'xlsx': pass,
+			'html': pass,
+			'pdf': pass,
 			'tar': unpack_tar,
 			'gz': unpack_gzip,
 			'tgz': unpack_tar,
@@ -129,15 +136,31 @@ class Map:
 		for f in files:
 			file_name = os.path.basename(f)
 
-			# using file type, extract this file!
-			file_types[guess_extension(file_name)](os.path.basename(f))
+			# separate out the file extension
+			root, ext = guess_extension(file_name)
 
+			# using file type, extract this file!
+			file_types[ext](os.path.basename(f))
 
 
 
 	def install(self):
-		# base install for a sql file should be to just read each file in directory with messytables and then insert it into table
+		"""
+		Does installation of the files into user's chosen database
 
+		NOTES:
+			- Does installation have to assume that it can just install from each of the files available? Do we
+			  have to re-write the installer for something complex like the US Census? And is that an acceptable level
+			  of configuration for a Map?
+		"""
+
+
+
+		# if we have a SQL file, we should run that
+		
+
+
+		# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
 		# get a table query, run it!
 		m2s.create_sql_table(rows)
 
