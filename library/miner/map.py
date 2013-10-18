@@ -53,6 +53,9 @@ class Map:
 		if db_name:
 			self.db_name = db_name
 
+					# open MySQL connection
+		self.db = DBConnect()
+
 
 	def __is_installed(self):
 		"""
@@ -60,12 +63,9 @@ class Map:
 		databases and db prefix names
 		"""
 
-		# open MySQL connection
-		db = DBConnect()
-
 		# Create database if it isn't there already
 		# Need to check that this returns TRUE
-		return cursor.execute(("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s';" % self.db_name))
+		return self.db.query(("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s';" % self.db_name))
 		
 	def setup(self):
 		"""
@@ -93,7 +93,7 @@ class Map:
 		Just run the install. This method should be overloaded by Maps when they need a different install pattern
 		Otherwise, this just runs the private method. Reason is that some of the install might need to happen first,
 		before the private method.
-		""".
+		"""
 		self.__install()
 
 	def cleanup(self):
@@ -204,8 +204,8 @@ class Map:
 			
 			if ext == "sql":
 				# if we have a SQL file, we should run that
-				db.create_table()
-				db.insert()
+				# TODO: THIS DOESN'T ACTUALLY WORK, BUT WE NEED TO DO SOMETHING LIKE THIS
+				self.db.query(f)
 
 			elif ext in ("csv", "pdf", "xls", "xlsx", "html"):	
 				# create messy2sql instance
@@ -227,9 +227,6 @@ class Map:
 
 				# get insert statements
 				db.insert(query = m2s.create_sql_insert(rows))
-
-				# and finally, commit
-				db.commit()
 			else:
 				pass
 

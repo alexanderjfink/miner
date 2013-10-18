@@ -22,33 +22,7 @@ class DBConnect:
     self.cursor = db.cursor()
 
     return self.db
-    
-    ## NEED TO FIX ERROR HANDLING HERE
 
-    # except db.Error as err:
-    #   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-    #     print("Something is wrong with your user name or password")
-    #    elif err.errno == errorcode.ER_BAD_DB_ERROR:
-    #      print("Database does not exist")
-    #    else:
-    #      print(err)
-    #  else:
-    #    cnx.close()
-
-    
-    # from mysql.connector import errorcode
-    # try:
-    #   cnx = mysql.connector.connect(**config)
-    #   return cnx
-    # except mysql.connector.Error as err:
-    #   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-    #     print("Something is wrong with your user name or password")
-    #   elif err.errno == errorcode.ER_BAD_DB_ERROR:
-    #     print("Database does not exist")
-    #   else:
-    #     print(err)
-    # else:
-    #   cnx.close()
 
   def create_db(db_name=None, query=None, drop_if_exists=False):
     """
@@ -107,6 +81,15 @@ class DBConnect:
       # if here, we didn't get a query to run, so do what we need to...
       return False
 
+  def query(db_name, query):
+    if db_name and query:
+      self.cursor.execute("USE %s;" % db_name)
+      self.cursor.execute(query)
+      self.cursor.commit()
+      return True
+    else:  
+      # fail
+      return False
 
   def commit():
     self.cursor.commit()

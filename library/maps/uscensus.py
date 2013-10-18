@@ -9,7 +9,7 @@ class USCensus2010(miner.Map):
 
 	data = {
 		'uscensus': {		# general table format from SQL
-			'url': ".sql",
+			'url': "http://www2.census.gov/census_2010/04-Summary_File_1/SF1_Access2003.mdb",
 			'mirror': "",
 			'sha1': "",
 			'dictionary': "",
