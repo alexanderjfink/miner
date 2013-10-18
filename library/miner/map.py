@@ -63,9 +63,6 @@ class Map:
 		# open MySQL connection
 		db = DBConnect()
 
-		# Create cursor
-		cursor = db.cursor()
-
 		# Create database if it isn't there already
 		# Need to check that this returns TRUE
 		return cursor.execute(("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s';" % self.db_name))
