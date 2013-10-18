@@ -20,6 +20,8 @@ def main(argv):
 
     # dict of existing maps
     # maps must be here in order to work
+
+    # TODO:  SHOULD BUILD THIS MAP OUT OF A LISTING OF MAPS IN THE MAPS/ FOLDER
     maps = {
         'uscensus2010': USCensus2010,
         'usform990': USForm990,
@@ -33,7 +35,7 @@ def main(argv):
         sys.exit()
 
     for opt, arg in opts:
-        # Should I switch this to a dictionary switching model from Learning Python?
+        # TODO: Should I switch this to a dictionary switching model from Learning Python?
 
         if opt in ("-h", "--h", "-help", "--help"):
             print "Usage:\n" +\
@@ -73,11 +75,16 @@ def main(argv):
                 print "Can't find dataset. Try miner -s DATASET"
 
         elif opt in ("-s"):
+            # TODO: Need to add fuzzy searching of datasets
             try:
                 proc = maps[arg]()
             except KeyError:
                 print "Dataset does not exist. Add it by visiting http://www.github.com/alexanderjfink/miner"
 
+
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    """ Just runs the main function by default when this module is loaded """
+
+    # Sends arguments from command line interface (CLI) to main function
+    main(sys.argv[1:])
 

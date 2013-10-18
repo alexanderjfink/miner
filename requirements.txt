@@ -1,5 +1,5 @@
-sqlalchemy
 nose
 rename
 messytables
 messy2sql
+sqlalchemy

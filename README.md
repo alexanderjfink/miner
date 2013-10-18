@@ -3,11 +3,52 @@ miner
 
 Script for downloading, unpacking, and converting online and public (and others to be added soon) datafiles to open format
 
-The goal of this app is to develop a bash interface, modeled after homebrew (brew.sh) that will allow anyone free and open access to data that is available on the web. The hope is to make it possible to do three things easily:
+The goal of this app is to develop a bash interface, modeled after [homebrew](http://brew.sh "Homebrew for Mac OS X") that will allow anyone free and open access to data that is available on the web. The hope is to make it possible to do three things easily:
 
 1. Search sources of data available online
 2. Make data easy to download and enter into a database (of your choice) into a common format
-3. Liberate public data by making it open data on your computer (you can use it in any format rather than proprietary formats (like the US Census, which uses Access)
+3. Liberate public data by making it open data on your computer (you can use it in any format rather than proprietary formats, e.g. the US Census, which uses Access)
+
+installation
+------------
+
+#### If you have nodejs installed
+`$npm install -g miner
+
+#### If you have pip installed
+`$pip install miner`
+
+On Mac OS X
+`$sudo pip install miner`
+
+#### If you have brew installed
+`$brew install miner`
+
+
+usage
+-----
+
+### Searching
+`$miner search (or dig) [dataset name] [OPTIONAL: subset name]`
+
+#### Example
+`$miner search (or dig) uscensus2010`
+`$miner search (or dig) minnesotapublicschools`
+
+### Describing (a dataset)
+`$miner describe (or assay) [dataset name] [OPTIONAL: subset name]`
+
+#### Example
+`$miner describe (or assay) uscensus2010`
+`$miner describe (or assay) uscensus2010 nd`
+
+### Installing
+`#miner install (or extract) [dataset name] [OPTIONAL: subset name]`
+
+#### Example
+`$miner install (or extract) uscensus2010`
+`$miner install (or extract) uscensus2010 mn`
+
 
 miner & dat
 -----------

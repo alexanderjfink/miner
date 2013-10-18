@@ -27,6 +27,9 @@ TMP_DIRECTORY = "./tmp"
 # DELETE_TMP_ON_COMPLETE			delete or save temporary files when extracting is finished?
 DELETE_TMP_ON_COMPLETE = True
 
+# DICTIONARIES						directory to store data dictionaries
+DICTIONARIES = "./dictionaries"
+
 
 #####################
 # DATABASE SETTINGS #

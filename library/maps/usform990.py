@@ -16,6 +16,13 @@ class USForm990Extracts(miner.Map):
 			'sha1': "",
 			'dictionary': "",
 		}
+		'2012': {
+			'url': "http://s3.citizenaudit.org/irs/bulk/manifest.csv.gz",
+			'mirror': "",
+			'sha1': "",
+			'dictionary': "",
+		}
+
 	}
 	
 	db_type = 'sql'

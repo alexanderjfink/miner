@@ -24,6 +24,8 @@ class Map:
 	# Specific URLs for the dataset downloads
 	# needs to be a dictionary ala
 	# data = {'census1': {url: 'http://www.census.gov/census1.zip', mirror: '', sha1: '', dictionary: ''}}
+	# TODO: data is downloaded and added to databases in the order listed here. if one set depends on installation of another, put the
+	# dependent ones later
 	data = {}
 
 	# type of database to install e.g. 'docstore','sql','keyvalue'
@@ -65,10 +67,46 @@ class Map:
 		cursor = db.cursor()
 
 		# Create database if it isn't there already
+		# Need to check that this returns TRUE
 		return cursor.execute(("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s';" % self.db_name))
 		
-
 	def setup(self):
+		"""
+		Just run setup. This method should be overloaded by Maps subclasses when they need a different setup pattern
+		Otherwise, just run the private method.
+		"""
+		self.__setup()
+
+	def download(self):
+		"""
+		Just run downloading. This method should be overloaded by Maps subclasses when they need a different download pattern
+		Otherwise, just run the private method.
+		"""
+		self.__download()
+
+	def unpack(self):
+		"""
+		Just run unpacking. This method should be overloaded by Maps subclasses when they need a different unpacking pattern
+		Otherwise, just run the private method.
+		"""
+		self.__unpack()
+
+	def install(self):
+		"""
+		Just run the install. This method should be overloaded by Maps when they need a different install pattern
+		Otherwise, this just runs the private method. Reason is that some of the install might need to happen first,
+		before the private method.
+		""".
+		self.__install()
+
+	def cleanup(self):
+		"""
+		Just run cleanup. This method should be overloaded by Maps subclasses when they need a different cleanup pattern
+		Otherwise, just run the private method.
+		"""
+		self.__cleanup()
+
+	def __setup(self):
 		""" Need to prep by creating a folder and changing the system into that directory """
 		
 		if global VERBOSE:
@@ -88,7 +126,7 @@ class Map:
 		# in case of sql, create a database here
 		# commit query
 
-	def download(self):
+	def __download(self):
 		"""
 		Using data dictionary of urls, grab the files and display a nice progress bar while doing it
 		"""
@@ -106,7 +144,7 @@ class Map:
 		#m2s = Messy2SQL()
 		
 
-	def unpack(self):
+	def __unpack(self):
 		"""
 		Unpack the downloads into the root directory for this map
 		"""
@@ -116,7 +154,7 @@ class Map:
 
 		# need to check what file type we've got now...
 		file_types = {
-			'csv': pass,
+			'csv': pass,  # don't need to unpack uncompressed files
 			'sql': pass,
 			'xls': pass,
 			'xlsx': pass,
@@ -143,15 +181,21 @@ class Map:
 			file_types[ext](os.path.basename(f))
 
 
-
-	def install(self):
+	def __install(self):
 		"""
 		Does installation of the files into user's chosen database
+
+		This is a primarily internal method, but if base it should just get called.
 
 		NOTES:
 			- Does installation have to assume that it can just install from each of the files available? Do we
 			  have to re-write the installer for something complex like the US Census? And is that an acceptable level
 			  of configuration for a Map?
+
+		TODO:
+			- Needs to install IN ORDER that they come in the map, in case one thing depends on another
+			- Need to fix how headers work -- can specify whether headers are present, whether all data should be installed
+			  into the same database?
 		"""
 
 		# for every file
@@ -166,14 +210,20 @@ class Map:
 				db.create_table()
 				db.insert()
 
-			elif ext in ("csv", "pdf", "xlsx", "html"):	
+			elif ext in ("csv", "pdf", "xls", "xlsx", "html"):	
 				# create messy2sql instance
 				m2s = Messy2SQL(file_name, DATABASES['sql'].TYPE)
 				# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
 				# get a table query, run it!
 				
-				# use messytables to build a MessyTables CSV
-				rows = CSVTableSet(file_name).tables[0]
+				# use messytables to build a MessyTables RowSet with file type
+				rows = {
+					'csv': CSVTableSet(file_name).tables[0],
+					'pdf': PDFTableSet(file_name).tables[0],
+					'xlsx': XLSTableSet(file_name).tables[0],
+					'xls': XLSTableSet(file_name).tables[0],
+					'html': HTMLTableSet(file_name).tables[0],
+				}[ext]
 
 				# use the rowset here to create a sql table query and execute
 				db.create_table(query = m2s.create_sql_table(rows))
@@ -186,7 +236,8 @@ class Map:
 			else:
 				pass
 
-	def cleanup(self):
+
+	def __cleanup(self):
 
 		if global VERBOSE:
 			print "Cleaning up folders and closing DB connections..."

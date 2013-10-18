@@ -16,9 +16,8 @@ class DBConnect:
       'raise_on_warnings': False,
     }
 
-
-    #try:
     self.db = dbapi2.connect(**config)
+
     return self.db
     
     ## NEED TO FIX ERROR HANDLING HERE
