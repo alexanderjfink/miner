@@ -43,19 +43,19 @@ DICTIONARIES = "./dictionaries"
 
 DATABASES = {
 		'sql': {
-			'TYPE': 'mysql',
-			'USERNAME': 'specialuser',
-			'PASSWORD': 'specialpass',
-			'HOSTNAME': 'localhost',
-			'DB_PREFIX': 'miner_', # If DB_PREFIX isn't set, no prefix will be used
+			'type': 'mysql',
+			'username': 'specialuser',
+			'password': 'specialpass',
+			'hostname': 'localhost',
+			'db_prefix': 'miner_', # If DB_PREFIX isn't set, no prefix will be used
 		},
 
 		'docstore': {
-			'TYPE': 'hadoop',
+			'type': 'hadoop',
 		},
 
 		'keyvalue': {
-			'TYPE': 'redis',
+			'type': 'redis',
 		}
 	}
 

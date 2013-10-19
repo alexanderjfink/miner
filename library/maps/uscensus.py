@@ -191,4 +191,24 @@ class USCensus2010(miner.Map):
 	}
 	
 	db_type = 'sql'
+
+	def unpack():
+		"""
+		Overload unpack method to deal with files nmaed .sf1
+		"""
+		import rename
+		rename 's/\.sf1$/\.txt/' *.sf1   #need to rename all the sf1 files to txts
+
+		# call standard unpack
+		self.__unpack()
+
+	def install():
+		"""
+		Overload install method
+		"""
+
+		# Open SQL file from MS Access using MDBTOOLS and turn it into a SQL file
+		# Make necessary modifications to SQL file and file names on unpacked system so install works properly
+		# Run standard installer now with appropriate modifications in place
+		self.__install()
 	

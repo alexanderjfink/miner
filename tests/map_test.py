@@ -13,6 +13,32 @@ class TestSQLMap():
 	def setUp(self):
 		""" Create a fake dataset to use to insert """
 
+		self.db = DBConnect()
+		self.db.create_db("test_db")
+
+		self.test_map = Map(db_name="test_db")
+
+		self.test_map.homepage = "http://www.mytestingdata.com/"
+		self.test_map.description = "The testing data for my Maps"
+		self.data = {
+			'extracts': {
+				'url': "http://s3.citizenaudit.org/irs/bulk/manifest.csv.gz",
+				'mirror': "",
+				'sha1': "",
+				'dictionary': "",
+			}
+			'2012': {
+				'url': "http://s3.citizenaudit.org/irs/bulk/manifest.csv.gz",
+				'mirror': "",
+				'sha1': "",
+				'dictionary': "",
+			}
+
+		}
+	
+	db_type = 'sql'
+
+
 		pass
 
 	def is_installed_test(self):

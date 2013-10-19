@@ -1,1 +1,0 @@
-from conf.settings import *
