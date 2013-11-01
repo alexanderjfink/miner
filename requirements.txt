@@ -1,7 +1,6 @@
 nose
 python-coveralls
 rename
-mdbtools
 messytables
 messy2sql
 sqlalchemy
