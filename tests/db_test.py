@@ -3,8 +3,6 @@
 import unittest
 import nose
 
-import StringIO
-
 from library.utils.db import *
 
 import mysql.connector as dbapi2

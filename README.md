@@ -1,6 +1,8 @@
 miner
 =====
 
+[![Build Status](https://travis-ci.org/alexanderjfink/miner.png)](https://travis-ci.org/alexanderjfink/miner)
+
 Script for downloading, unpacking, and converting online and public (and others to be added soon) datafiles to open format
 
 The goal of this app is to develop a bash interface, modeled after [homebrew](http://brew.sh "Homebrew for Mac OS X") that will allow anyone free and open access to data that is available on the web. The hope is to make it possible to do three things easily:
@@ -17,6 +19,10 @@ installation
 
 #### If you have pip installed
 `$pip install miner`
+
+#### If you have R installed
+`$r
+install.packages("miner")`
 
 On Mac OS X
 `$sudo pip install miner`

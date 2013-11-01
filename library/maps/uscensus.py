@@ -3,7 +3,7 @@ miner map for US Census 2010 data
 Data is released publicly by census.gov
 """
 
-class USCensus2010(miner.Map):
+class USCensus2010(Map):
 	description = 'Data from the 2010 Dicennial US Census.'
 	homepage = 'http://www.census.gov'
 
@@ -115,7 +115,7 @@ class USCensus2010(miner.Map):
 		},
 		'nh': {
 			'url': "http://www2.census.gov/census_2010/04-Summary_File_1/New_Hampshire/nh2010.sf1.zip",
-		}
+		},
 		'nj': {
 			'url': "http://www2.census.gov/census_2010/04-Summary_File_1/New_Jersey/nj2010.sf1.zip",
 		},
@@ -196,11 +196,11 @@ class USCensus2010(miner.Map):
 		"""
 		Overload unpack method to deal with files nmaed .sf1
 		"""
-		import rename
-		rename 's/\.sf1$/\.txt/' *.sf1   #need to rename all the sf1 files to txts
+		#import rename
+		#rename 's/\.sf1$/\.txt/' *.sf1   #need to rename all the sf1 files to txts
 
 		# call standard unpack
-		self.__unpack()
+		Map.unpack()
 
 	def install():
 		"""
@@ -210,5 +210,5 @@ class USCensus2010(miner.Map):
 		# Open SQL file from MS Access using MDBTOOLS and turn it into a SQL file
 		# Make necessary modifications to SQL file and file names on unpacked system so install works properly
 		# Run standard installer now with appropriate modifications in place
-		self.__install()
+		Map.install()
 	

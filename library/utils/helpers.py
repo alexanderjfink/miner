@@ -10,9 +10,9 @@ Each of these functions has corresponding tests in tests/helpers_test.py
 
 import os, csv, sys, optparse
 import messytables
-import messy2sql
 import urllib2
 import zipfile, tarfile
+from messy2sql.core import Messy2SQL
 
 def download_file(url, with_progress_bar=True):
     """ Download file and display progress bar """

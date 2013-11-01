@@ -4,8 +4,10 @@ Should be general enough that it can fit all maps (unless there seems good reaso
 Should be specific enough that it does a lot of the heavy lifting for Maps
 """
 
-import messy2sql
+from messy2sql.core import Messy2SQL
+from messytables import CSVTableSet, HTMLTableSet, XLSTableSet, PDFTableSet
 import re, os
+from conf.settings import *
 from library.utils.helpers import download_file, unpack_tar, unpack_gzip, unpack_zip, guess_extension
 from library.utils.db import DBConnect
 
@@ -35,19 +37,7 @@ class Map:
 	db_name = ''
 
 
-	def __init__(self, mirrors=None, sha1=None, dictionary=None, db_name=None):
-
-		# Mirror in case this dataset goes down
-		if mirror:
-			self.mirror = mirror
-
-		# sha1 checksum for dataset download
-		if sha1:
-			self.sha1 = sha1
-
-		# URLs for the data dictionaries
-		if dictionary:
-			self.dictionary = dictionary
+	def __init__(self, db_name=None):
 
 		# specific database name specified
 		if db_name:
@@ -57,7 +47,7 @@ class Map:
 		self.db = DBConnect()
 
 
-	def __is_installed(self):
+	def __is_installed(self, db_name):
 		"""
 		Utility to check if Map is already installed in base database using available
 		databases and db prefix names
@@ -66,106 +56,74 @@ class Map:
 		# Create database if it isn't there already
 		# Need to check that this returns TRUE
 		return self.db.query(("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s';" % self.db_name))
-		
+
 	def setup(self):
-		"""
-		Just run setup. This method should be overloaded by Maps subclasses when they need a different setup pattern
-		Otherwise, just run the private method.
-		"""
-		self.__setup()
-
-	def download(self):
-		"""
-		Just run downloading. This method should be overloaded by Maps subclasses when they need a different download pattern
-		Otherwise, just run the private method.
-		"""
-		self.__download()
-
-	def unpack(self):
-		"""
-		Just run unpacking. This method should be overloaded by Maps subclasses when they need a different unpacking pattern
-		Otherwise, just run the private method.
-		"""
-		self.__unpack()
-
-	def install(self):
-		"""
-		Just run the install. This method should be overloaded by Maps when they need a different install pattern
-		Otherwise, this just runs the private method. Reason is that some of the install might need to happen first,
-		before the private method.
-		"""
-		self.__install()
-
-	def cleanup(self):
-		"""
-		Just run cleanup. This method should be overloaded by Maps subclasses when they need a different cleanup pattern
-		Otherwise, just run the private method.
-		"""
-		self.__cleanup()
-
-	def __setup(self):
 		""" Need to prep by creating a folder and changing the system into that directory """
-		
-		if global VERBOSE:
+		global VERBOSE, TMP_DIRECTORY
+
+		if VERBOSE:
 			print "Initializing temporary working directory..."
 
 		# make directory for this in temp dir + name_of_map
 		# switch to this directory
-		os.chdir('./tmp')
+		os.chdir(TMP_DIRECTORY)
 
 		try:
 			os.mkdir(self.__name__)
 		except OSError:
 			print "Directory already exists for this file..."
 
-		os.chdir('./tmp/%s')  % self.__name__
+		os.chdir((TMP_DIRECTORY + '%s' % self.__name__))
 
 		# in case of sql, create a database here
 		# commit query
 
-	def __download(self):
+	def download(self):
 		"""
 		Using data dictionary of urls, grab the files and display a nice progress bar while doing it
 		"""
-
-		if global VERBOSE:
+		global VERBOSE, TMP_DIRECTORY
+		if VERBOSE:
 			print "Downloading data files..."
+
+		os.chdir(TMP_DIRECTORY + "%s" % self.__name__)
 
 		# need an iterator to download what is either a single page or a load of files, but that should get specified.
 		# this should be the easiest one to write
-		for url in data:
-			download_file(url.url, with_progress_bar=True)
+		for k, v in self.data.iteritems():
+			download_file(v['url'], with_progress_bar=True)
 
 		# use a messy2sql because we'll need it
 		# eventually this can be part of an IF import -- we only need it if we are doing SQL
 		#m2s = Messy2SQL()
 		
 
-	def __unpack(self):
+	def unpack(self):
 		"""
 		Unpack the downloads into the root directory for this map
 		"""
+		global VERBOSE
 
-		if global VERBOSE:
+		if VERBOSE:
 			print "Unpacking data files to disk..."
 
 		# need to check what file type we've got now...
 		file_types = {
-			'csv': pass,  # don't need to unpack uncompressed files
-			'sql': pass,
-			'xls': pass,
-			'xlsx': pass,
-			'html': pass,
-			'pdf': pass,
-			'tar': unpack_tar,
-			'gz': unpack_gzip,
-			'tgz': unpack_tar,
-			'tar.gz': unpack_tar,
-			'zip': unpack_zip,
+			'.csv': lambda x: None,  # don't need to unpack uncompressed files
+			'.sql': lambda x: None,
+			'.xls': lambda x: None,
+			'.xlsx': lambda x: None,
+			'.html': lambda x: None,
+			'.pdf': lambda x: None,
+			'.tar': unpack_tar,
+			'.gz': unpack_gzip,
+			'.tgz': unpack_tar,
+			'.tar.gz': unpack_tar,
+			'.zip': unpack_zip,
 		}
 
 		# get all files in working directory of this map
-		files = os.listdir('./')
+		files = os.listdir(TMP_DIRECTORY + '%s/' % self.__name__)
 
 		# iterate through files
 		for f in files:
@@ -178,7 +136,7 @@ class Map:
 			file_types[ext](os.path.basename(f))
 
 
-	def __install(self):
+	def install(self):
 		"""
 		Does installation of the files into user's chosen database
 
@@ -190,50 +148,66 @@ class Map:
 			  of configuration for a Map?
 
 		TODO:
-			- Needs to install IN ORDER that they come in the map, in case one thing depends on another
 			- Need to fix how headers work -- can specify whether headers are present, whether all data should be installed
 			  into the same database?
 		"""
 
-		# for every file
-		files = os.listdir('./')
+		# check if we need a separate db for each url or whether one is enough
+		# one is enough if specified here
+		if self.db_name:
+			db_name = self.db_name
+			self.db.create_db(self.__name__)
 
-		for f in files:
-			file_name = os.path.basename(f)
-			root, ext = guess_extension(file_name)
+		# for every file url
+		#files = os.listdir(TMP_DIRECTORY + '%s/' % self.__name__)
+		for k, v in self.data.iteritems():
 			
-			if ext == "sql":
+			root, ext = guess_extension(v['url'])
+			file_name = os.path.basename(root + ext)
+
+			# If we don't have a db name, we should find it in the URLs
+			if self.db_name:
+				db_name = self.db_name
+			else:
+				db_name = v['database']
+				self.db.create_db(db_name=db_name)
+			
+			if ext == ".sql":
 				# if we have a SQL file, we should run that
 				# TODO: THIS DOESN'T ACTUALLY WORK, BUT WE NEED TO DO SOMETHING LIKE THIS
 				self.db.query(f)
 
-			elif ext in ("csv", "pdf", "xls", "xlsx", "html"):	
+			elif ext in (".csv", ".pdf", ".xls", ".xlsx", ".html"):	
 				# create messy2sql instance
-				m2s = Messy2SQL(file_name, DATABASES['sql'].TYPE)
+				m2s = Messy2SQL(file_name, DATABASES['sql']['type'])
 				# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
 				# get a table query, run it!
+
+
+				fh = open((TMP_DIRECTORY + self.__name__ + '/' + file_name), 'rb')
 				
 				# use messytables to build a MessyTables RowSet with file type
 				rows = {
-					'csv': CSVTableSet(file_name).tables[0],
-					'pdf': PDFTableSet(file_name).tables[0],
-					'xlsx': XLSTableSet(file_name).tables[0],
-					'xls': XLSTableSet(file_name).tables[0],
-					'html': HTMLTableSet(file_name).tables[0],
+					'.csv': CSVTableSet(fh).tables[0],
+					# '.pdf': PDFTableSet(file_name),
+					# '.xlsx': XLSTableSet(file_name),
+					# '.xls': XLSTableSet(file_name),
+					# '.html': HTMLTableSet(file_name),
 				}[ext]
 
 				# use the rowset here to create a sql table query and execute
-				db.create_table(query = m2s.create_sql_table(rows))
+				self.db.create_table(query = m2s.create_sql_table(rows), db_name=db_name)
 
 				# get insert statements
-				db.insert(query = m2s.create_sql_insert(rows))
+				self.db.insert(query = m2s.create_sql_insert(rows), db_name=db_name, table_name=root)
 			else:
 				pass
 
 
-	def __cleanup(self):
+	def cleanup(self):
+		global VERBOSE
 
-		if global VERBOSE:
+		if VERBOSE:
 			print "Cleaning up folders and closing DB connections..."
 		
 		# need to delete all the files in tmp/thismap

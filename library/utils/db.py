@@ -58,6 +58,9 @@ class DBConnect:
 		Generate a create table query on a database
 		"""
 
+		if not db_name:
+			db_name = self.db_name
+
 		if query:
 			self.cursor.execute("USE %s;" % db_name)
 			self.cursor.execute(query)

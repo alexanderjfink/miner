@@ -11,6 +11,8 @@ Eventually setup.py should allow the user to configure these on first use or ins
 However, at this point, the user will need to update these themself.
 """
 
+import os
+
 #################
 # CORE SETTINGS #
 #################
@@ -21,15 +23,16 @@ VERBOSE = True
 # debug								should debug information be displayed?
 DEBUG = True
 
-# TMP_DIRECTORY						directory to store temporary download files while extracting
-TMP_DIRECTORY = "./tmp"
-
 # DELETE_TMP_ON_COMPLETE			delete or save temporary files when extracting is finished?
 DELETE_TMP_ON_COMPLETE = True
 
 # DICTIONARIES						directory to store data dictionaries
 DICTIONARIES = "./dictionaries"
 
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__)) + "/../"
+
+# TMP_DIRECTORY						directory to store temporary download files while extracting
+TMP_DIRECTORY = PROJECT_ROOT + "tmp/"
 
 #####################
 # DATABASE SETTINGS #
