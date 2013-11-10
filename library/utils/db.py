@@ -53,13 +53,17 @@ class DBConnect:
 			return False
 
 
-	def create_table(self, db_name=None, table_name=None, headers_types=None, query=None):
+	def create_table(self, db_name=None, table_name=None, headers_types=None, query=None, drop_if_exists=False):
 		"""
 		Generate a create table query on a database
 		"""
 
 		if not db_name:
 			db_name = self.db_name
+
+		if drop_if_exists:
+			self.cursor.execute("USE %s;" % db_name)
+			self.cursor.execute("DROP TABLE IF EXISTS %s;" % table_name)
 
 		if query:
 			self.cursor.execute("USE %s;" % db_name)
@@ -68,7 +72,7 @@ class DBConnect:
 			return True
 		elif db_name and table_name and headers_types:
 			self.cursor.execute("USE %s;" % db_name)
-			self.cursor.execute("CREATE TABLE %s (%s);" % (table_name, headers_types))
+			self.cursor.execute("CREATE TABLE IF NOT EXISTS %s (%s);" % (table_name, headers_types))
 			self.db.commit()
 			return True
 		else:

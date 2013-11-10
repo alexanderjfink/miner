@@ -136,7 +136,7 @@ class Map:
 			file_types[ext](os.path.basename(f))
 
 
-	def install(self):
+	def install(self, drop_if_exists=False):
 		"""
 		Does installation of the files into user's chosen database
 
@@ -179,7 +179,7 @@ class Map:
 
 			elif ext in (".csv", ".pdf", ".xls", ".xlsx", ".html"):	
 				# create messy2sql instance
-				m2s = Messy2SQL(file_name, DATABASES['sql']['type'])
+				m2s = Messy2SQL(file_name, DATABASES['sql']['type'], table_name=k)
 				# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
 				
 				# get a table query, run it!
@@ -195,7 +195,7 @@ class Map:
 				}[ext]
 
 				# use the rowset here to create a sql table query and execute
-				self.db.create_table(query = m2s.create_sql_table(rows), db_name=db_name)
+				self.db.create_table(query = m2s.create_sql_table(rows), db_name=db_name, drop_if_exists=drop_if_exists)
 
 				# get insert statements
 				query = m2s.create_sql_insert(rows)

@@ -71,7 +71,7 @@ class TestSQLMap(unittest.TestCase):
 
 	def test_install(self):
 		""" Should pass if data gets inserted into SQL database """
-		self.test_map.install()
+		self.test_map.install(drop_if_exists=True)
 
 		# self.db.query("SELECT * FROM ")
 
