@@ -1,9 +1,6 @@
-#!/usr/bin/env python2.7
-# Remember to change "python 2.7" to "python" -- this shouldn't be based on old version of Python
-
 """
 MINER
-Dependencies: mdbtools, mysql (goal to move to any database), rename (update list)
+Dependencies: mdbtools, postgresql (goal to move to any database), rename (update list)
 
 Test Dependencies: nose
 """

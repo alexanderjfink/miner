@@ -1,4 +1,4 @@
 id,name,email,date,info1,info2,info3
-1,alex,a@google.com,10/11/2013,more stuff,what a string, more stringy 'things'
-3,josephine,jojo@web.com,10/10/2013,interesting things, more interesting 'things' about me,others
+1,"alex",a@google.com,10/11/2013,"more stuff","what a string", "more stringy 'things'"
+3,josephine,jojo@web.com,10/10/2013,interesting things, "more interesting 'things' about me",others
 5,amos,amos@dontblameus.com,1012/1987,more stuff,a few things you might like, nothing

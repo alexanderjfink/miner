@@ -181,9 +181,8 @@ class Map:
 				# create messy2sql instance
 				m2s = Messy2SQL(file_name, DATABASES['sql']['type'])
 				# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
+				
 				# get a table query, run it!
-
-
 				fh = open((TMP_DIRECTORY + self.__name__ + '/' + file_name), 'rb')
 				
 				# use messytables to build a MessyTables RowSet with file type
@@ -199,7 +198,9 @@ class Map:
 				self.db.create_table(query = m2s.create_sql_table(rows), db_name=db_name)
 
 				# get insert statements
-				self.db.insert(query = m2s.create_sql_insert(rows), db_name=db_name, table_name=root)
+				query = m2s.create_sql_insert(rows)
+				print query
+				self.db.insert(query = query, db_name=db_name, table_name=root)
 			else:
 				pass
 

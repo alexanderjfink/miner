@@ -14,21 +14,17 @@ The goal of this app is to develop a bash interface, modeled after [homebrew](ht
 installation
 ------------
 
-#### If you have nodejs installed
-`$npm install -g miner
-
 #### If you have pip installed
 `$pip install miner`
-
-#### If you have R installed
-`$r
-install.packages("miner")`
 
 On Mac OS X
 `$sudo pip install miner`
 
-#### If you have brew installed
-`$brew install miner`
+#### Eventually I will add support for...
+
+homebrew
+npm
+R package manager
 
 
 usage

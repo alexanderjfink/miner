@@ -4,3 +4,5 @@ rename
 messytables
 messy2sql
 sqlalchemy
+psycopg2
+mysql-connector-python
