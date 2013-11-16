@@ -11,5 +11,5 @@ MINER_LIBRARY_DIRECTORY=$(cd "$MINER_FILE_DIRECTORY"/.. && pwd -P)
 MINER_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
 
 # Execute python file that does main lifting, send it system args
-exec python2.7 "$MINER_LIBRARY_DIRECTORY/miner.py" "$@"
+exec python "$MINER_LIBRARY_DIRECTORY/miner.py" "$@"
 

@@ -3,6 +3,8 @@ miner map for US Census 2010 data
 Data is released publicly by census.gov
 """
 
+from library.miner.map import Map
+
 class USCensus2010(Map):
 	description = 'Data from the 2010 Dicennial US Census.'
 	homepage = 'http://www.census.gov'

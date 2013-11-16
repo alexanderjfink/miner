@@ -4,10 +4,15 @@ Dependencies: mdbtools, postgresql (goal to move to any database), rename (updat
 
 Test Dependencies: nose
 """
- 
+
+# Python core 
 import glob, os, csv, sys, getopt
+
+# Local libraries
 from library.utils.helpers import *
 from library.utils.db import *
+
+# Temporary module imports
 from library.maps.uscensus import *
 from library.maps.usform990 import *
 from library.maps.nycpolicepenalties import *
@@ -21,7 +26,7 @@ def main(argv):
     # TODO:  SHOULD BUILD THIS MAP OUT OF A LISTING OF MAPS IN THE MAPS/ FOLDER
     maps = {
         'uscensus2010': USCensus2010,
-        'usform990': USForm990,
+        'usform990': USForm990Extracts,
         'nycpolicepenalties': NYCPolicePenalties,
     }
 
@@ -52,15 +57,15 @@ def main(argv):
             # install_location
             try:
                 proc = maps[arg]()
-                file_name = proc.download()
-                if file_name:
-                    if proc.unpack(file_name):
-                        if proc.install(file_name):
-                            print "Dataset " + arg + " installed successfully."
-                print "Dataset " + arg + " installed successfully"
-
+                proc.setup()
+                proc.download()
+                proc.unpack()
+                proc.install()
+                proc.cleanup()
             except KeyError:
                 print "Can't find dataset. Try miner -s DATASET"
+            else:
+                print "Dataset " + arg + " installed successfully."
 
 
         elif opt in ("-a"):

@@ -4,9 +4,14 @@ Should be general enough that it can fit all maps (unless there seems good reaso
 Should be specific enough that it does a lot of the heavy lifting for Maps
 """
 
+# Python standard
+import re, os
+
+# External libraries
 from messy2sql.core import Messy2SQL
 from messytables import CSVTableSet, HTMLTableSet, XLSTableSet, PDFTableSet
-import re, os
+
+# Local to project
 from conf.settings import *
 from library.utils.helpers import download_file, unpack_tar, unpack_gzip, unpack_zip, guess_extension
 from library.utils.db import DBConnect
@@ -69,14 +74,11 @@ class Map:
 		os.chdir(TMP_DIRECTORY)
 
 		try:
-			os.mkdir(self.__name__)
+			os.mkdir(self.__class__.__name__)
 		except OSError:
 			print "Directory already exists for this file..."
 
-		os.chdir((TMP_DIRECTORY + '%s' % self.__name__))
-
-		# in case of sql, create a database here
-		# commit query
+		os.chdir((TMP_DIRECTORY + '%s' % self.__class__.__name__))		
 
 	def download(self):
 		"""
@@ -86,17 +88,12 @@ class Map:
 		if VERBOSE:
 			print "Downloading data files..."
 
-		os.chdir(TMP_DIRECTORY + "%s" % self.__name__)
+		os.chdir(TMP_DIRECTORY + "%s" % self.__class__.__name__)
 
 		# need an iterator to download what is either a single page or a load of files, but that should get specified.
 		# this should be the easiest one to write
 		for k, v in self.data.iteritems():
 			download_file(v['url'], with_progress_bar=True)
-
-		# use a messy2sql because we'll need it
-		# eventually this can be part of an IF import -- we only need it if we are doing SQL
-		#m2s = Messy2SQL()
-		
 
 	def unpack(self):
 		"""
@@ -123,7 +120,7 @@ class Map:
 		}
 
 		# get all files in working directory of this map
-		files = os.listdir(TMP_DIRECTORY + '%s/' % self.__name__)
+		files = os.listdir(TMP_DIRECTORY + '%s/' % self.__class__.__name__)
 
 		# iterate through files
 		for f in files:
@@ -156,10 +153,10 @@ class Map:
 		# one is enough if specified here
 		if self.db_name:
 			db_name = self.db_name
-			self.db.create_db(self.__name__)
+			self.db.create_db(self.__class__.__name__)
 
 		# for every file url
-		#files = os.listdir(TMP_DIRECTORY + '%s/' % self.__name__)
+		#files = os.listdir(TMP_DIRECTORY + '%s/' % self.__class__.__name__)
 		for k, v in self.data.iteritems():
 			
 			root, ext = guess_extension(v['url'])
@@ -183,15 +180,15 @@ class Map:
 				# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
 				
 				# get a table query, run it!
-				fh = open((TMP_DIRECTORY + self.__name__ + '/' + file_name), 'rb')
+				fh = open((TMP_DIRECTORY + self.__class__.__name__ + '/' + file_name), 'rb')
 				
 				# use messytables to build a MessyTables RowSet with file type
 				rows = {
 					'.csv': CSVTableSet(fh).tables[0],
-					# '.pdf': PDFTableSet(file_name),
-					# '.xlsx': XLSTableSet(file_name),
-					# '.xls': XLSTableSet(file_name),
-					# '.html': HTMLTableSet(file_name),
+					#'.pdf': PDFTableSet(file_name),
+					#'.xlsx': XLSTableSet(file_name),
+					#'.xls': XLSTableSet(file_name),
+					#'.html': HTMLTableSet(file_name),
 				}[ext]
 
 				# use the rowset here to create a sql table query and execute
@@ -213,7 +210,7 @@ class Map:
 		
 		# need to delete all the files in tmp/thismap
 		os.chdir('../')
-		os.rmdir(self.__name__)
+		os.rmdir(self.__class__.__name__)
 
 		# close DB connection
 		cursor.close()

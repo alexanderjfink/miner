@@ -40,7 +40,7 @@ class TestSQLMap(unittest.TestCase):
 							}
 		self.test_map.db_type = 'sql'
 		self.test_map.db_name = 'test_db'
-		self.test_map.__name__ = "TestMap"
+		self.test_map.__name__ = "Map"
 
 
 	def is_installed_test(self):
@@ -52,7 +52,7 @@ class TestSQLMap(unittest.TestCase):
 		self.test_map.setup()
 
 		try:
-			os.chdir(TMP_DIRECTORY + 'TestMap')
+			os.chdir(TMP_DIRECTORY + 'Map')
 		except OSError:
 			assert 0 == 1 # now we know this failed in the tests
 			print "Could not find test data directory"
@@ -61,13 +61,13 @@ class TestSQLMap(unittest.TestCase):
 		""" Should pass if download completes and dataset resides in tmp/ """
 		self.test_map.download()
 
-		self.assertEqual(os.path.exists(TMP_DIRECTORY + "TestMap/testdata.csv"), True)
+		self.assertEqual(os.path.exists(TMP_DIRECTORY + "Map/testdata.csv"), True)
 
 	def test_unpack(self):
 		""" Should pass if files exist on disk """
 		self.test_map.unpack()
 
-		self.assertEqual(os.path.exists(TMP_DIRECTORY + "TestMap/testdata.csv"), True)
+		self.assertEqual(os.path.exists(TMP_DIRECTORY + "Map/testdata.csv"), True)
 
 	def test_install(self):
 		""" Should pass if data gets inserted into SQL database """
@@ -81,6 +81,7 @@ class TestSQLMap(unittest.TestCase):
 
 	def tearDown(self):
 		""" Destroy fake dataset and database changes (if any) """
+		pass
 		# shutil.rmtree(TMP_DIRECTORY + "TestMap")
 
 class TestDocstoreMap():

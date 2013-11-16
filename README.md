@@ -17,18 +17,14 @@ installation
 #### If you have pip installed
 `$pip install miner`
 
-On Mac OS X
-`$sudo pip install miner`
-
 #### Eventually I will add support for...
 
-homebrew
-npm
-R package manager
-
+homebrew, npm, and R package manager
 
 usage
 -----
+
+Please note - Miner is in pre-alpha and these commands are meant to serve only as a preview for future functionality (chances aregood they are currently buggy)
 
 ### Searching
 `$miner search (or dig) [dataset name] [OPTIONAL: subset name]`

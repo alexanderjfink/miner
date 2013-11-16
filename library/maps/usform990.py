@@ -5,7 +5,9 @@ Data is released publicly by CitizenAudit
 This should demonstrate exactly how simple a Map can be...
 """
 
-class USForm990Extracts(miner.Map):
+from library.miner.map import Map
+
+class USForm990Extracts(Map):
 	homepage = 'http://www.citizenaudit.org'
 	description = 'US Non-Profit Form 990 Tax information released by CitizenAudit'
 
