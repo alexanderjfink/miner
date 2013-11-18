@@ -61,7 +61,7 @@ def main(argv):
                 proc.download()
                 proc.unpack()
                 proc.install()
-                proc.cleanup()
+                # proc.cleanup()
             except KeyError:
                 print "Can't find dataset. Try miner -s DATASET"
             else:

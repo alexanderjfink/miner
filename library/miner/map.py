@@ -5,7 +5,7 @@ Should be specific enough that it does a lot of the heavy lifting for Maps
 """
 
 # Python standard
-import re, os
+import re, os, shutil
 
 # External libraries
 from messy2sql.core import Messy2SQL
@@ -64,7 +64,6 @@ class Map:
 
 	def setup(self):
 		""" Need to prep by creating a folder and changing the system into that directory """
-		global VERBOSE, TMP_DIRECTORY
 
 		if VERBOSE:
 			print "Initializing temporary working directory..."
@@ -84,7 +83,7 @@ class Map:
 		"""
 		Using data dictionary of urls, grab the files and display a nice progress bar while doing it
 		"""
-		global VERBOSE, TMP_DIRECTORY
+		
 		if VERBOSE:
 			print "Downloading data files..."
 
@@ -93,29 +92,28 @@ class Map:
 		# need an iterator to download what is either a single page or a load of files, but that should get specified.
 		# this should be the easiest one to write
 		for k, v in self.data.iteritems():
-			download_file(v['url'], with_progress_bar=True)
+			download_file(url=v['url'], map_name=self.__class__.__name__, with_progress_bar=True)
 
 	def unpack(self):
 		"""
 		Unpack the downloads into the root directory for this map
 		"""
-		global VERBOSE
 
 		if VERBOSE:
 			print "Unpacking data files to disk..."
 
 		# need to check what file type we've got now...
 		file_types = {
-			'.csv': lambda x: None,  # don't need to unpack uncompressed files
+			'.csv': lambda x: None, # Don't need to unpack these types of files
 			'.sql': lambda x: None,
 			'.xls': lambda x: None,
 			'.xlsx': lambda x: None,
 			'.html': lambda x: None,
 			'.pdf': lambda x: None,
 			'.tar': unpack_tar,
-			'.gz': unpack_gzip,
 			'.tgz': unpack_tar,
 			'.tar.gz': unpack_tar,
+			'.gz': unpack_gzip,
 			'.zip': unpack_zip,
 		}
 
@@ -130,7 +128,9 @@ class Map:
 			root, ext = guess_extension(file_name)
 
 			# using file type, extract this file!
-			file_types[ext](os.path.basename(f))
+			file_types[ext](file_name)
+
+		print "Unpacking complete..."
 
 
 	def install(self, drop_if_exists=False):
@@ -149,6 +149,9 @@ class Map:
 			  into the same database?
 		"""
 
+		if VERBOSE:
+			print "Beginning copy of data to local disk."
+
 		# check if we need a separate db for each url or whether one is enough
 		# one is enough if specified here
 		if self.db_name:
@@ -156,18 +159,19 @@ class Map:
 			self.db.create_db(self.__class__.__name__)
 
 		# for every file url
-		#files = os.listdir(TMP_DIRECTORY + '%s/' % self.__class__.__name__)
 		for k, v in self.data.iteritems():
-			
 			root, ext = guess_extension(v['url'])
-			file_name = os.path.basename(root + ext)
+			file_name = os.path.basename(root + ext) # PROBLEM IS WITH GUESSED NAME OF FILE HERE>...
 
 			# If we don't have a db name, we should find it in the URLs
 			if self.db_name:
 				db_name = self.db_name
-			else:
+			elif 'database' in v: # check if database name is specified in map
 				db_name = v['database']
-				self.db.create_db(db_name=db_name)
+			else: # at this point, we just need to give it a name... so name it the maps name
+				db_name = k
+			
+			self.db.create_db(db_name=db_name) # Should only create if not already there...
 			
 			if ext == ".sql":
 				# if we have a SQL file, we should run that
@@ -180,8 +184,13 @@ class Map:
 				# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
 				
 				# get a table query, run it!
-				fh = open((TMP_DIRECTORY + self.__class__.__name__ + '/' + file_name), 'rb')
+				try:
+					fh = open((TMP_DIRECTORY + self.__class__.__name__ + '/' + file_name), 'rb')
+				except IOError:
+					print "Opening file failed or file does not exist."
 				
+				print fh.read()
+
 				# use messytables to build a MessyTables RowSet with file type
 				rows = {
 					'.csv': CSVTableSet(fh).tables[0],
@@ -191,15 +200,17 @@ class Map:
 					#'.html': HTMLTableSet(file_name),
 				}[ext]
 
+				for row in rows:
+					print "Hello"
 				# use the rowset here to create a sql table query and execute
 				self.db.create_table(query = m2s.create_sql_table(rows), db_name=db_name, drop_if_exists=drop_if_exists)
 
 				# get insert statements
 				query = m2s.create_sql_insert(rows)
 				print query
-				self.db.insert(query = query, db_name=db_name, table_name=root)
+				self.db.insert(query = query, db_name=db_name, table_name=k)
 			else:
-				pass
+				print "File type did not match supported types..."
 
 
 	def cleanup(self):
@@ -210,9 +221,8 @@ class Map:
 		
 		# need to delete all the files in tmp/thismap
 		os.chdir('../')
-		os.rmdir(self.__class__.__name__)
+		shutil.rmtree(self.__class__.__name__)
 
 		# close DB connection
-		cursor.close()
-		cnx.close()
+		self.db.close()
 	

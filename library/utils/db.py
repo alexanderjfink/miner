@@ -57,7 +57,6 @@ class DBConnect:
 		"""
 		Generate a create table query on a database
 		"""
-
 		if not db_name:
 			db_name = self.db_name
 
@@ -65,6 +64,8 @@ class DBConnect:
 			self.cursor.execute("USE %s;" % db_name)
 			self.cursor.execute("DROP TABLE IF EXISTS %s;" % table_name)
 
+		print query
+		
 		if query:
 			self.cursor.execute("USE %s;" % db_name)
 			self.cursor.execute(query)
@@ -77,6 +78,7 @@ class DBConnect:
 			return True
 		else:
 			# something didn't work
+			print "Creation of table was NOT successful. Failing more or less gracefully..."
 			return False
 
 	def insert(self, db_name=None, table_name=None, values=None, query=None):
@@ -106,6 +108,7 @@ class DBConnect:
 			return True
 		else:
 			# fail
+			print "Query execution didn't go as expected."
 			return False
 
 	def commit(self):

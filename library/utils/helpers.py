@@ -14,12 +14,14 @@ import urllib2
 import zipfile, tarfile
 from messy2sql.core import Messy2SQL
 
-def download_file(url, with_progress_bar=True):
+from conf.settings import *
+
+def download_file(url, map_name, with_progress_bar=True, overwrite_if_exists=False):
     """ Download file and display progress bar """
 
     file_name = url.split('/')[-1]
     
-    if os.path.exists(file_name):
+    if not overwrite_if_exists and (os.path.exists((TMP_DIRECTORY + '%s' % (map_name + '/' + file_name)))):
         print "Your lucky day! You already have a local copy of this file..."
     else:
         u = urllib2.urlopen(url)
@@ -27,21 +29,25 @@ def download_file(url, with_progress_bar=True):
 
         if with_progress_bar:
             meta = u.info()
-            file_size = int(meta.getheaders("Content-Length")[0])
-            print "Downloading: %s Bytes: %s" % (file_name, file_size)
 
-            file_size_dl = 0
-            block_sz = 8192
-            while True:
-                buffer = u.read(block_sz)
-                if not buffer:
-                    break
+            try:
+                file_size = int(meta.getheaders("Content-Length")[0])
+                print "Downloading: %s Bytes: %s" % (file_name, file_size)
 
-                file_size_dl += len(buffer)
-                f.write(buffer)
-                status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
-                status = status + chr(8)*(len(status)+1)
-                print status,
+                file_size_dl = 0
+                block_sz = 8192
+                while True:
+                    buffer = u.read(block_sz)
+                    if not buffer:
+                        break
+
+                    file_size_dl += len(buffer)
+                    f.write(buffer)
+                    status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
+                    status = status + chr(8)*(len(status)+1)
+                    print status,
+            except IndexError: # Need this if file doesn't have content-length metadata
+                print "File download complete."
 
         f.close()
 
