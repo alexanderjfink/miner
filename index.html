@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Miner</title>
+<!--
+
+Colorscheme from: http://colorschemedesigner.com/#0T11Tw0w0w0w0
+
+Miner photo from Miner's Association Hall, England, UK
+by Leo Reynolds, Creative Commons ShareAlike: http://www.flickr.com/photos/lwr/6923990782/
+http://creativecommons.org/licenses/by-nc-sa/2.0/
+
+https://plus.google.com/115011519482727921907/posts
+
+Thanks to Etherpad for the borrowed design on GitHub.com.
+
+    http://etherpad.org
+
+Thanks to Yohei Shimomae and the Apache Cordova team for the original design.
+
+    http://couchdb.apache.org
+
+Thanks to Patrick Hoesly for his original artwork:
+
+    http://www.flickr.com/photos/zooboing/4715048673/
+
+This fabulous linen texture was integrated into the site design.
+
+Thanks to Dave Gandy for his work on Font Awesome
+
+    http://fortawesome.github.com/Font-Awesome
+
+This iconic web font was used extensively around the site.
+-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<link rel="shortcut icon" href="favicon.ico" />
+<link type="text/css" rel="stylesheet" href="css/reset.css" />
+<link type="text/css" rel="stylesheet" href="css/font-awesome.css" />
+<link type="text/css" rel="stylesheet" href="css/index.css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="js/smooth-scroll.js"></script>
+<meta name="google-site-verification" content="bVuuj6GwPO2TG1ZmB67XFvKxM0YSMrQIw5rYcG5RwVw" />
+</head>
+<body>
+  <div id="header">
+    <div class="wrap">
+      <a href="#" class="logo"></a>
+      <div id="nav">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#download">Download</a></li>
+          <li><a href="#contribute">Contribute</a></li>
+          <li><a href="#links">Links</a></li>
+          <li><a href="#contact">Contact</a></li>
+       </ul>
+      </div>
+      <div id="mobile-nav">
+        <ul>
+          <li><a href="#about"><i class="icon-info-sign icon-large"></i></a></li>
+          <li><a href="#download"><i class="icon-download-alt"></i></a></li>
+          <li><a href="#contribute"><i class="icon-wrench"></i></a></li>
+          <li><a href="#links"><i class="icon-external-link"></i></a></li>
+          <li><a href="#contact"><i class="icon-envelope"></i></a></li>
+       </ul>
+      </div>
+    </div>
+  </div>
+  <div class="header-pushdown"></div>
+  <div class="content primary showcase">
+    <div class="wrap">
+      <div class="feature"><img src="img/screenshot.jpg" alt="" /></div>
+      <h1><strong>Miner</strong> is an <strong>Open Source</strong> command-line interface for downloading and managing <strong>public and open data</strong> written in <strong>Python</strong></h1>
+      <div class="button"><a href="#download"><i class="icon-download-alt"></i>DOWNLOAD</a><br/><span>Version 0.1.0</span></div>
+    </div>
+  </div>
+  
+  <a class="scroll wrap" name="about"></a>
+<div class="content wrap">
+    <h1><i class="icon-info-sign icon-large"></i> Get rapid access to public and open data</h1>
+
+    <h5 class="subheading">No more need to worry about trying to get access to obtuse, difficult to access public data (*achem* U.S. Census)</h5>
+
+    <!-- <div class="button small" style="margin-bottom: 25pt; position:relative; top:-10pt;"><a target="_blank" href="http://beta.etherpad.org"><i class="icon-fire"></i>Try it now!</a><br></div> -->
+    
+    <p>Miner allows you to download and install (into a data store of your choice, with support beyond SQL on the way) public and open data to your server or computer. Now, you can automatically grab a copy of any data you need without having to figure out new, obtuse data formats. Miner does it all for you.</p>
+    <p>Every dataset is represented by a Map. Maps lead you to data treasure! From the command line, you can search for maps (dig), describe basic information about the dataset (assay), and install a dataset to your preferred data store (extract). If there's not a Map available yet for the dataset of your choice, worry not! It is really easy to make your own Map--often, very little programming skill is even required.</p>
+    
+    <p>Miner is super easy to install and use. We wrote it in Python 2.7, so it should work out of the box on Mac OS X and most Linux distros. If you are on Windows and haven't set it up yet, Python is pretty <a href="http://python.org/download/windows/">easy to install</a>. If you use SQLite as the datastore, that's all you need to install. Follow our <a href="https://github.com/alexanderjfink/miner">installation instructions</a> to get started.</p>
+  </div>
+  
+  <a class="scroll wrap" name="download"></a>
+  <div class="content wrap">
+    <h1><i class="icon-download-alt"></i> Download</h1>
+    <p>Also, see our <a href="https://github.com/ether/etherpad-lite#installation">installation instructions</a>.<p>
+    <div class="button"><a href="http://github.com/ether/etherpad-lite/zipball/master"><i class="icon-download-alt"></i>Linux/Mac</a><br/><span>Version 1.3</span></div>
+    <div class="button"><a href="http://etherpad.org/downloads/etherpad-lite-win-1.2.11-b1b6289eb3.zip"><i class="icon-download-alt"></i>Windows</a><br/><span>Version 1.2.11</span></div>
+  </div>
+  
+  <a class="scroll wrap" name="contribute"></a>
+  <div class="content wrap">
+    <h1><i class="icon-wrench"></i> Contribute</h1>
+    <p>Etherpad is an open source project. Lots of passionate, helpful individuals have joined and voluntarily contributed every single bit throughout this project: From this website through the documentation to the very core of the application. So, if you like etherpad and would like to give back some love, we'd like to see <em>your</em> contributions! It doesn't matter how familiar you are with real-time applications, or whether you know how to write programs for Node.js. There are plenty of ways to be helpful!</p>
+    <p>One of the first things you should do is actually use Etherpad, and get to know it - read about it, evangelise it, and engage with the wider community. You can also translate the user interface to your mother tongue or learn how to write plugins. Be creative!</p>
+    <p>If you'd like to help, <a href="#contact">get in touch</a>! Also, <a href="https://github.com/ether/etherpad-lite/wiki">the wiki</a> is always a valuable resource.</p>
+    
+    <h5>Development workflow</h5>
+    <p>The main development happens on <a href="https://github.com/alexanderjfink/miner">Github</a>. To contribute, <a href="http://help.github.com/fork-a-repo/">fork</a> the <a href="https://github.com/alexanderjfink/miner">main repo</a>, branch off a <a href="https://www.google.com/search?q=git+feature+branches">feature branch</a> from <code>develop</code>, make your changes and <a href="http://git-scm.com/docs/git-commit">commit</a> them, <a href="http://git-scm.com/docs/git-push">push</a> to your fork and submit a <a href="http://help.github.com/send-pull-requests/">pull request</a> for <code>ether/develop</code>.</p>
+    <p>Once in a while we merge <code>develop</code> into <code>master</code>, which results in a new release. This means you will always find the latest stable version in the <code>master</code> branch.</p>
+
+  </div>
+
+  <a class="scroll wrap" name="links"></a>
+  <div class="content wrap">
+    <h1><i class="icon-external-link"></i> Links</h1>
+  </div>
+  <div class="content showcase">
+    <div class="wrap">
+      <ul class="links column-2">
+        <li><a href="http://publicfragments.org" target="_blank">Blog<i class="icon-chevron-right"></i></a></li>
+        <li><a href="https://github.com/alexanderjfink/miner">GitHub repository<i class="icon-chevron-right"></i></a></li>
+        <li><a href="https://github.com/alexanderjfink/miner/tree/master/library/maps">List of available maps<i class="icon-chevron-right"></i></a></li>
+        
+        <li></li>
+        
+        <li><a href="https://github.com/alexanderjfink/miner/issues">Issue tracker<i class="icon-chevron-right"></i></a></li>
+        <li><a href="https://github.com/alexanderjfink/miner/wiki">Wiki<i class="icon-chevron-right"></i></a></li>
+        <li><a href="http://miner.readthedocs.org">Documentation <small>v0.1</small><i class="icon-chevron-right"></i></a></li>
+
+      </ul>
+      
+      <ul class="links column-2">
+        <li><a href="" onclick="document.getElementById('paypal').submit(); return false;">Donate on Paypal<img width="1" height="1" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" alt=""><i class="icon-chevron-right"></i>
+        <form style="display:inline;" method="post" target="_blank" action="https://www.paypal.com/cgi-bin/webscr" id="paypal"><input type="hidden" value="_s-xclick" name="cmd"><input type="hidden" value="KD6H7D2V7Z8YQ" name="hosted_button_id"><input type="submit" value="Donate"/></form></a></li>
+        <li><a href="http://flattr.com/thing/71378/Etherpad-Foundation">Donate on flattr<i class="icon-chevron-right"></i></a></li>
+        <li><a target="_blank" href="https://coinbase.com/checkouts/1e572bf8a82e4663499f7f1f66c2d15a">Donate Bitcoins<i class="icon-chevron-right"></i></a></li>
+
+      </ul>
+    </div>
+  </div>
+
+  <a class="scroll wrap" name="contact"></a>
+  <div class="content wrap">
+    <h1><i class="icon-envelope"></i> Get in touch</h1>
+  </div>
+  <div class="content showcase">
+    <ul class="links wrap">
+      <li><a href="http://groups.google.com/group/etherpad-lite-dev">Mailing List<i class="icon-chevron-right"></i></a></li>
+      <li><a href="http://webchat.freenode.net/?channels=#miner">IRC: #miner on freenode<i class="icon-chevron-right"></i></a></li>
+      <li><a href="http://twitter.com/alexfink">Twitter: @AlexFink<i class="icon-chevron-right"></i></a></li>
+      <li><a href="mailto:contact@miner.sh">Email: contact@miner.sh&nbsp;(Alex Fink)<i class="icon-chevron-right"></i></a></li>
+    </ul>
+  </div>
+  
+  <a class="scroll wrap" name="thanks"></a>
+  <div class="content wrap">
+    <h1><i class="icon-heart"></i> Thanks</h1>
+    <p>Many individuals, companies and organizations have contributed to Etherpad Lite. We'd like to thank them all!</p>
+    <ul>
+      <li><a href="http://primaryt.co.uk">Primary Technology</a> built Etherpad Lite in 2010 to build an educational product called <a href="http://primarypad.com">PrimaryPad</a></li>
+      <li><a href="http://mozilla.org">Mozilla</a> have made key contributions in nearly every area since 2012</li>
+      <li><a href="http://wikimedia.org">Wikimedia Foundation</a> as an early adopter of Etherpad Lite have contributed to various aspects of bug discovery and resolution</li>
+      <li><a href="http://google.com">Google</a> originally open-sourced the key libraries required to create Etherpad Lite after a purchase of Appjet</li>
+      <li><a href="http://www.piratpartiet.se/">PiratPartiet</a> have been vocal in promoting collaborative writing</li>
+      <li><a href="http://sfconservancy.org/">Software Freedom Conservancy</a> helps promote, improve, develop, and defend Free, Libre, and Open Source Software (FLOSS) projects. </li>
+    </ul>
+    <p>Additionally, our thanks go out to the tens of thousands of developers and organizations who have created all the modules we depend on or contributed in some way to our ability to provide Etherpad Lite as open source.</p>
+    <p>We'd also like to thank you. You, who've been making Etherpad Lite what it is, if you've been developing awesome features or plugins, whether you're runnning an instance or you're just one of our diligent users.</p>
+    <p>Thank you!</p>
+  </div>
+  
+  <div id="footer">
+  <div class="wrap">
+    <p><img style="float:right;" width="50px" src="img/pickaxe.svg"/></p>
+    <p>Copyright &copy; Alexander&nbsp;Fink.</p>
+    <p>Design &copy; Alexander Fink & The Apache Software Foundation, adapted by Alex Fink — Licensed under the <a rel="license" href="http://www.apache.org/licenses/LICENSE-2.0
+">Apache License 2.0</a></p>
+  </div>
+  </div>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-19303815-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>
