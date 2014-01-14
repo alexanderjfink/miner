@@ -99,6 +99,8 @@ class Map:
 		Unpack the downloads into the root directory for this map
 		"""
 
+		# TODO: EACH URL UNPACKED SHOULD BE A SEPARATE SUBFOLDER...
+
 		if VERBOSE:
 			print "Unpacking data files to disk..."
 
@@ -158,10 +160,16 @@ class Map:
 			db_name = self.db_name
 			self.db.create_db(self.__class__.__name__)
 
+
+		# TODO: ITERATE OVER EACH SUBFOLDER
+		# MAKE A DB FOR EACH SUBFOLDER W/PREFIXES (BOTH DEFAULT IN SETTINGS AND FOR THIS DATASET)
+		# ITERATE OVER EACH FILE IN SUBFOLDER
+		# MAKE A TABLE FOR EACH FILE
+
 		# for every file url
 		for k, v in self.data.iteritems():
 			root, ext = guess_extension(v['url'])
-			file_name = os.path.basename(root + ext) # PROBLEM IS WITH GUESSED NAME OF FILE HERE>...
+			file_name = os.path.basename(root + ext) # PROBLEM IS WITH GUESSED NAME OF FILE HERE>... may make more than one file, not by same name...
 
 			# If we don't have a db name, we should find it in the URLs
 			if self.db_name:

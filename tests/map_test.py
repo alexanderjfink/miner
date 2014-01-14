@@ -37,6 +37,8 @@ class TestSQLMap(unittest.TestCase):
 								'testdata2': {
 									'url': ("file:///" + PROJECT_ROOT + "tests/testdata.csv"),
 								},
+
+								## TODO: ADD ANOTHER TEST FILE HERE THAT IS COMPRESSED
 							}
 		self.test_map.db_type = 'sql'
 		self.test_map.db_name = 'test_db'

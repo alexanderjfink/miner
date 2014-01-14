@@ -1,6 +1,7 @@
 nose
 python-coveralls
 rename
+docopt
 messytables
 messy2sql
 sqlalchemy
