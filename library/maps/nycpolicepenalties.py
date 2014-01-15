@@ -6,7 +6,7 @@ Data is released publicly by the City of New York
 from library.miner.map import Map
 
 class NYCPolicePenalties(Map):
-	description = 'US Non-Profit Form 990 Tax information released by CitizenAudit'
+	description = 'Penalties for police in NYC'
 	homepage = 'http://data.cityofnewyork.us'
 
 	data = {

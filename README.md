@@ -19,45 +19,49 @@ installation
 
 #### Eventually I will add support for...
 
-homebrew, npm, and R package manager
+homebrew and R package manager
 
 usage
 -----
 
-Please note - Miner is in pre-alpha and these commands are meant to serve only as a preview for future functionality (chances aregood they are currently buggy)
+Please note - `miner` is in pre-alpha and these commands are meant to serve only as a preview for future functionality (chances aregood they are currently buggy)
 
 ### Searching
-`$miner search (or dig) [dataset name] [OPTIONAL: subset name]`
+`$miner search (or dig) <dataset name> [OPTIONAL: subset name]`
 
 #### Example
 `$miner search (or dig) uscensus2010`
 `$miner search (or dig) minnesotapublicschools`
 
 ### Describing (a dataset)
-`$miner describe (or assay) [dataset name] [OPTIONAL: subset name]`
+`$miner describe (or assay) <dataset name> [OPTIONAL: subset name]`
 
 #### Example
 `$miner describe (or assay) uscensus2010`
 `$miner describe (or assay) uscensus2010 nd`
 
 ### Installing
-`#miner install (or extract) [dataset name] [OPTIONAL: subset name]`
+`#miner install (or extract) <dataset name> [OPTIONAL: subset name]`
 
 #### Example
 `$miner install (or extract) uscensus2010`
 `$miner install (or extract) uscensus2010 mn`
 
+development
+-----------
+
+Testing: `$nosetests`
 
 miner & dat
 -----------
 
-What is the difference between miner and [dat](https://github.com/maxogden/dat "dat on GitHub")? We don't see ourselves as competitors. Rather, we are working on parallel and complementary projects. Here are what we see as differences:
+What is the difference between `miner` and [dat](https://github.com/maxogden/dat "dat on GitHub")? We don't `miner` as a competitor to dat. Rather, `miner` is a parallel and complementary project. Here are what we see as differences:
 
-- miner focuses on using a formula (map) to get raw data files straight from original sources, download, and process them. dat is focused on building collaborative and version controlled datasets.
-- While miner is in early development, it will be fully operational quickly and aims to be a very small application. dat is still in early development and aims to be a much more robust and comprehensive data collaboration tool. 
-- Cleaned data (as dat would allow the sharing of) is great for software projects! However, researchers often need raw datasets to choose cleaning methods and ensure quality. 
+- `miner` focuses on using a formula (map) to get raw data files straight from original sources, download, and process them. dat is focused on building collaborative and version controlled datasets.
+- While `miner` is in early development, it will be fully operational quickly and aims to be a very small application. dat aims to be a much more robust and comprehensive data collaboration tool. 
+- Cleaned data (as dat would allow the sharing of) is great for software projects! However, researchers often need raw datasets to choose cleaning methods (these have their own biases) and ensure quality. 
 - Some data is public but not yet copyleft/open--downloading your own copy is the only legal way to use it. Shared repositories may be allowed privately, but would be difficult to get permission for publicly.
-- miner makes it possible to pull raw data regularly and note when data is changed (sometimes for [good](http://www.cs.cmu.edu/~enron/ "enron email data redacted") and perhaps sometimes for less good reasons.
-- miner might be used as one tool to easily dump into dat.
+- `miner` makes it possible to pull raw data regularly and note when data is changed (sometimes for [good](http://www.cs.cmu.edu/~enron/ "enron email data redacted") and perhaps sometimes for less good reasons.
+- `miner` might be used as one tool to easily dump into dat. It should be one tool in an open data toolkit.
 
-One way to look at it is that miner exists given today's non-standards-based, mixed license, individually/organizationally hosted dataset world. dat could be seen as the forerunner of the open knowledge / open data world.
+One way to look at it is that `miner` exists given today's non-standards-based, mixed license, individually/organizationally hosted dataset world. dat could be seen as the forerunner of the open knowledge / open data world.

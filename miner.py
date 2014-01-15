@@ -1,13 +1,14 @@
-"""Miner.
+"""MINER - A script for downloading, unpacking, and converting public and open data into your preferred local format
+http://alexanderjfink.github.io/miner
 
 Usage:
-	miner.py search <dataset>
+	miner.py (search|dig) <dataset>
 	miner.py (assay|describe) <dataset>
 	miner.py (extract|install) <dataset>
 
 Options:
-	-h --help     Show this screen.
-	--version     Show version.
+	-h --help	Show this screen.
+	-v --version	Show version.
 
 """
 
@@ -57,7 +58,7 @@ if __name__ == '__main__':
 		else:
 			print "Dataset " + args['<dataset>'] + " installed successfully."
 
-	elif args['assay'] or args['describe']:
+	elif args['describe'] or args['assay']:
 		try:
 			proc = maps[args['<dataset>']]()
 			print proc.description
@@ -65,7 +66,7 @@ if __name__ == '__main__':
 		except KeyError:
 			print "Can't find dataset. Try miner search <dataset>"
 
-	elif args['search']:
+	elif args['search'] or args['dig']:
 		# TODO: Need to add fuzzy searching of datasets
 		try:
 			proc = maps[args['<dataset>']]()

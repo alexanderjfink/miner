@@ -69,7 +69,7 @@ class TestSQLMap(unittest.TestCase):
 		""" Should pass if files exist on disk """
 		self.test_map.unpack()
 
-		self.assertEqual(os.path.exists(TMP_DIRECTORY + "Map/testdata.csv"), True)
+		self.assertEqual(os.path.exists(TMP_DIRECTORY + "Map/testdata/testdata.csv"), True)
 
 	def test_install(self):
 		""" Should pass if data gets inserted into SQL database """

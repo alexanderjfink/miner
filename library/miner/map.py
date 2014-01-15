@@ -99,8 +99,6 @@ class Map:
 		Unpack the downloads into the root directory for this map
 		"""
 
-		# TODO: EACH URL UNPACKED SHOULD BE A SEPARATE SUBFOLDER...
-
 		if VERBOSE:
 			print "Unpacking data files to disk..."
 
@@ -124,13 +122,26 @@ class Map:
 
 		# iterate through files
 		for f in files:
+			# get file name to unpack
 			file_name = os.path.basename(f)
 
 			# separate out the file extension
 			root, ext = guess_extension(file_name)
 
+			# create new directory for file
+			os.mkdir(root)
+
+			# move file into directory
+			os.rename('./' + file_name, './' + root + '/' + file_name)
+
+			# switch to directory
+			os.chdir(root)
+
 			# using file type, extract this file!
 			file_types[ext](file_name)
+
+			# switch back
+			os.chdir('../')
 
 		print "Unpacking complete..."
 
