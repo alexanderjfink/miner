@@ -13,7 +13,7 @@ from messytables import CSVTableSet, HTMLTableSet, XLSTableSet, PDFTableSet
 
 # Local to project
 from conf.settings import *
-from library.utils.helpers import download_file, unpack_tar, unpack_gzip, unpack_zip, guess_extension
+from library.utils.helpers import download_file, get_filepaths, unpack_tar, unpack_gzip, unpack_zip, guess_extension
 from library.utils.db import DBConnect
 
 
@@ -87,7 +87,7 @@ class Map:
 		if VERBOSE:
 			print "Downloading data files..."
 
-		os.chdir(TMP_DIRECTORY + "%s" % self.__class__.__name__)
+		os.chdir(TMP_DIRECTORY + '%s/' % self.__class__.__name__)
 
 		# need an iterator to download what is either a single page or a load of files, but that should get specified.
 		# this should be the easiest one to write
@@ -130,10 +130,13 @@ class Map:
 			root, ext = guess_extension(file_name)
 
 			# create new directory for file
-			os.mkdir(root)
+			try:
+				os.mkdir(root)
+			except OSError:
+				print "File already exists on disk... No worries!"
 
 			# move file into directory
-			os.rename('./' + file_name, './' + root + '/' + file_name)
+			os.rename(('./' + file_name + ext), ('./' + root + '/' + file_name + ext))
 
 			# switch to directory
 			os.chdir(root)
@@ -172,42 +175,34 @@ class Map:
 			db_name = self.db_name
 			self.db.create_db(self.__class__.__name__)
 
-
-		# X - TODO: ITERATE OVER EACH SUBFOLDER (we know that the folders have the name of the file? there should be same number of folders as there are urls being extracted...)
-		# X - MAKE A DB FOR EACH SUBFOLDER W/PREFIXES (BOTH DEFAULT IN SETTINGS AND FOR THIS DATASET)
-		# X - ITERATE OVER EACH FILE IN SUBFOLDER
-		# X - MAKE A TABLE FOR EACH FILE
-		# X - INSERT DATA INTO TABLE
-
-		# for every file url
-		# for k, v in self.data.iteritems():
-
+		# STEP 1: 
 		# Build a set of folders
-		for dirs in get_filepaths(os.getcwd())['directories']: # assume we are in right directory is probably bad choice UNSAFE
+		for dirs in get_filepaths(os.getcwd())['directories']: # assume we are in right directory is probably bad choice ***UNSAFE***
 			# now we have a list of the directories within this directory
 
-			os.chdir(dirs) # change to directory here UNSAFE
+			os.chdir(dirs) # change to directory here
 
+			## STEP 2: Perform operations at directory level - create database w/name of directory as name
 
-			## Perform operations at directory level - create database w/name of directory as name
-
-			path_name = os.path.basename(dirs) # dir path name
-			# root, ext = guess_extension(self.data[path_name]['url'])
-			# file_name = os.path.basename(root + ext) # PROBLEM IS WITH GUESSED NAME OF FILE HERE>... may make more than one file, not by same name...
+			path_name = os.path.basename(dirs) # dir path name, ex: 'testdata'
 
 			# If we don't have a db name, we should find it in the URLs
 			if self.db_name:
 				db_name = self.db_name
-			elif 'database' in v: # check if database name is specified in map
+			elif 'database' in self.data[path_name].keys(): # check if database name is specified in map ***UNTESTED***
 				db_name = self.data[path_name]['database']
 			else: # at this point, we just need to give it a name... so name it the maps name
 				db_name = path_name
 			
 			self.db.create_db(db_name=db_name) # Should only create if not already there...
-			
 
-			# Iterate through each file in directory, create a table, insert data
+			# STEP 3: Iterate through each file in directory, create a table, insert data
 			for files in get_filepaths(os.getcwd())['files']:
+
+				root, ext = guess_extension(self.data[path_name]['url']) # get name of this particular file...
+				file_name = os.path.basename(root + ext)
+
+				sql_tbl, _ = guess_extension(file_name) # need an acceptable name for sql table
 				
 				if ext == ".sql":
 					# if we have a SQL file, we should run that
@@ -216,17 +211,16 @@ class Map:
 
 				elif ext in (".csv", ".pdf", ".xls", ".xlsx", ".html"):	
 					# create messy2sql instance
-					m2s = Messy2SQL(file_name, DATABASES['sql']['type'], table_name=k)
+					m2s = Messy2SQL(file_name, DATABASES['sql']['type'], table_name=sql_tbl)
 					# if we have PDF, HTML, CSV, or Excel files, we should use messy2sql
 					
 					# get a table query, run it!
 					try:
-						fh = open((TMP_DIRECTORY + self.__class__.__name__ + '/' + file_name), 'rb')
+						# fh = open((TMP_DIRECTORY + self.__class__.__name__ + '/' + file_name), 'rb')
+						fh = open(files, 'rb')
 					except IOError:
 						print "Opening file failed or file does not exist."
 					
-					print fh.read()
-
 					# use messytables to build a MessyTables RowSet with file type
 					rows = {
 						'.csv': CSVTableSet(fh).tables[0],
@@ -235,16 +229,14 @@ class Map:
 						#'.xls': XLSTableSet(file_name),
 						#'.html': HTMLTableSet(file_name),
 					}[ext]
-
-					for row in rows:
-						print "Hello"
+					
 					# use the rowset here to create a sql table query and execute
-					self.db.create_table(query = m2s.create_sql_table(rows), db_name=db_name, drop_if_exists=drop_if_exists)
+					self.db.create_table(query = m2s.create_sql_table(rows, sql_table_name=sql_tbl), db_name=db_name, drop_if_exists=drop_if_exists)
 
 					# get insert statements
 					query = m2s.create_sql_insert(rows)
-					print query
-					self.db.insert(query = query, db_name=db_name, table_name=k)
+
+					self.db.insert(query = query, db_name=db_name, table_name=sql_tbl)
 				else:
 					print "File type did not match supported types..."
 
