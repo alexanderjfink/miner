@@ -16,7 +16,7 @@ from messy2sql.core import Messy2SQL
 
 from conf.settings import *
 
-def download_file(url, map_name, with_progress_bar=True, overwrite_if_exists=False):
+def download_file(url, map_name, file_rename, with_progress_bar=True, overwrite_if_exists=False):
     """ Download file and display progress bar """
 
     file_name = url.split('/')[-1]
@@ -50,6 +50,41 @@ def download_file(url, map_name, with_progress_bar=True, overwrite_if_exists=Fal
                 print "File download complete."
 
         f.close()
+
+        # need to rename the file to match the name in the Map
+        root, ext = guess_extension(file_name)
+        os.rename(file_name, file_rename + ext)
+
+
+def get_filepaths(directory):
+"""This function will generate the file names in a directory 
+tree by walking the tree either top-down or bottom-up. For each 
+directory in the tree rooted at directory top (including top itself), 
+it yields a 3-tuple (dirpath, dirnames, filenames).
+
+From Johnny
+http://stackoverflow.com/questions/3207219/how-to-list-all-files-of-a-directory-in-python
+"""
+    dir_paths = []
+    file_paths = []  # List which will store all of the full filepaths.
+
+    # Walk the tree.
+    for root, directories, files in os.walk(directory):
+
+        for filename in files:
+
+            # Join the two strings in order to form the full filepath.
+            filepath = os.path.join(root, filename)
+
+            file_paths.append(filepath)  # Add it to the list.
+
+        for dirname in directories:
+
+            dirpath = os.path.join(root, dirname)
+            dir_paths.append(dirpath)
+
+    return {'files': file_paths, 'directories': dir_paths}
+
 
 def unpack_tar(filename):
     """ Take a filename, assume correct OS location """

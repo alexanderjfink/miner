@@ -4,7 +4,7 @@ http://alexanderjfink.github.io/miner
 Usage:
 	miner.py (search|dig) <dataset>
 	miner.py (assay|describe) <dataset>
-	miner.py (extract|install) <dataset>
+	miner.py (extract|install) <dataset> [--subset <subset>]
 
 Options:
 	-h --help	Show this screen.
