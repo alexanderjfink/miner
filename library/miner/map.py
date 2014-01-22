@@ -70,14 +70,11 @@ class Map:
 
 		# make directory for this in temp dir + name_of_map
 		# switch to this directory
-		os.chdir(TMP_DIRECTORY)
 
 		try:
-			os.mkdir(self.__class__.__name__)
+			os.mkdir(TMP_DIRECTORY + '%s' % self.__class__.__name__)
 		except OSError:
 			print "Directory already exists for this file..."
-
-		os.chdir((TMP_DIRECTORY + '%s' % self.__class__.__name__))		
 
 	def download(self):
 		"""
@@ -87,7 +84,11 @@ class Map:
 		if VERBOSE:
 			print "Downloading data files..."
 
-		os.chdir(TMP_DIRECTORY + '%s/' % self.__class__.__name__)
+		try:
+			os.chdir(TMP_DIRECTORY + '%s' % self.__class__.__name__)
+		except OSError:
+			self.setup() # first try running setup - these shouldn't be run outta order
+			print "Directory change failure. Please check TMP_DIRECTORY & PROJECT_ROOT settings. Or don't execute this method out of order"
 
 		# need an iterator to download what is either a single page or a load of files, but that should get specified.
 		# this should be the easiest one to write
@@ -102,6 +103,14 @@ class Map:
 
 		if VERBOSE:
 			print "Unpacking data files to disk..."
+
+		try:
+			# not the most elegant solution, but these methods shouldn't be executed out of order
+			os.chdir(TMP_DIRECTORY + '%s' % self.__class__.__name__)
+			os.listdir(TMP_DIRECTORY + '%s' % self.__class__.__name__)
+		except OSError:
+			self.download() # chain upwards
+			print "Directory change failure. Please check TMP_DIRECTORY & PROJECT_ROOT settings. Or don't execute this method out of order"
 
 		# need to check what file type we've got now...
 		file_types = {
@@ -123,29 +132,31 @@ class Map:
 
 		# iterate through files
 		for f in files:
-			# get file name to unpack
-			file_name = os.path.basename(f)
+			if os.path.isfile(f):
 
-			# separate out the file extension
-			root, ext = guess_extension(file_name)
+				# get file name to unpack
+				file_name = os.path.basename(f)
 
-			# create new directory for file
-			try:
-				os.mkdir(root)
-			except OSError:
-				print "File already exists on disk... No worries!"
+				# separate out the file extension
+				root, ext = guess_extension(file_name)
 
-			# move file into directory
-			os.rename(('./' + file_name + ext), ('./' + root + '/' + file_name + ext))
+				# create new directory for file
+				try:
+					os.mkdir(root)
+				except OSError:
+					print "File already exists on disk... No worries!"
 
-			# switch to directory
-			os.chdir(root)
+				# move file into directory
+				os.rename(('./' + file_name), ('./' + root + '/' + file_name))
 
-			# using file type, extract this file!
-			file_types[ext](file_name)
+				# switch to directory
+				os.chdir(root)
 
-			# switch back
-			os.chdir('../')
+				# using file type, extract this file!
+				file_types[ext](file_name)
+
+				# switch back
+				os.chdir('../')
 
 		print "Unpacking complete..."
 

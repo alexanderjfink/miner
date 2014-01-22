@@ -60,7 +60,7 @@ class TestSQLMap(unittest.TestCase):
 			print "Could not find test data directory"
 
 	def test_download(self):
-		""" Should pass if download completes and dataset resides in tmp/ """
+		""" Should pass if download completes and dataset resides in tmp/[Map] """
 		self.test_map.download()
 
 		self.assertEqual(os.path.exists(TMP_DIRECTORY + "Map/testdata.csv"), True)
