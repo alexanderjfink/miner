@@ -248,6 +248,9 @@ class Map:
 				else:
 					print "File type did not match supported types..."
 
+		if VERBOSE:
+			print "Data copied successfully to database!"
+
 
 	def cleanup(self):
 		global VERBOSE

@@ -52,7 +52,7 @@ if __name__ == '__main__':
 			proc.download()
 			proc.unpack()
 			proc.install()
-			# proc.cleanup()
+			proc.cleanup()
 		except KeyError:
 			print "Can't find dataset. Try miner search <dataset>"
 		else:

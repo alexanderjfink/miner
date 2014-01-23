@@ -38,15 +38,31 @@ class DBConnect:
 				self.cursor.execute("DROP DATABASE %s;" % db_name)
 			except DatabaseError:
 				# We don't need to do anything with this, just need to try it.
-				pass
+				print "Error dropping current database."
 
 		if query:
-			self.cursor.execute(query)
-			self.db.commit()
+			try:
+				self.cursor.execute(query)
+			except DatabaseError:
+				print "Error executing create database query."
+
+			try:
+				self.db.commit()
+			except DatabaseError:
+				print "Error committing creation of database."
+
 			return True
 		elif db_name:
-			self.cursor.execute("CREATE DATABASE IF NOT EXISTS %s;" % db_name)
-			self.db.commit()
+			try:
+				self.cursor.execute("CREATE DATABASE IF NOT EXISTS %s;" % db_name)
+			except DatabaseError:
+				print "Error executing create database based on database name."
+
+			try:
+				self.db.commit()
+			except DatabaseError:
+				print "Error committing creation of database."
+
 			return True
 		else:
 			# fail if neither is specified
@@ -61,20 +77,29 @@ class DBConnect:
 			db_name = self.db_name
 
 		if drop_if_exists:
-			self.cursor.execute("USE %s;" % db_name)
-			self.cursor.execute("DROP TABLE IF EXISTS %s;" % table_name)
-
-		print query
+			try:
+				self.cursor.execute("USE %s;" % db_name)
+				self.cursor.execute("DROP TABLE IF EXISTS %s;" % table_name)
+			except DatabaseError:
+				print "Error dropping current table to create new one based on your specifications."
 		
 		if query:
-			self.cursor.execute("USE %s;" % db_name)
-			self.cursor.execute(query)
-			self.db.commit()
+			try:
+				self.cursor.execute("USE %s;" % db_name)
+				self.cursor.execute(query)
+				self.db.commit()
+			except DatabaseError:
+				print "Error executing query to create database table."
+
 			return True
 		elif db_name and table_name and headers_types:
-			self.cursor.execute("USE %s;" % db_name)
-			self.cursor.execute("CREATE TABLE IF NOT EXISTS %s (%s);" % (table_name, headers_types))
-			self.db.commit()
+			try:
+				self.cursor.execute("USE %s;" % db_name)
+				self.cursor.execute("CREATE TABLE IF NOT EXISTS %s (%s);" % (table_name, headers_types))
+				self.db.commit()
+			except DatabaseError:
+				print "Error executing generated query to create database table"
+
 			return True
 		else:
 			# something didn't work
@@ -85,13 +110,20 @@ class DBConnect:
 
 		if query:
 			# if here, we've been sent a pre-prepared query
-			self.cursor.execute(query)
-			self.db.commit()
+			try:
+				self.cursor.execute(query)
+				self.db.commit()
+			except DatabaseError:
+				print "Error inserting into database using query."
+
 			return True
 		elif db_name and table_name and values:
-			self.cursor.execute("USE %s;" % db_name)
-			self.cursor.execute("INSERT INTO %s VALUES (%s);" % (table_name, values))
-			self.db.commit()
+			try:
+				self.cursor.execute("USE %s;" % db_name)
+				self.cursor.execute("INSERT INTO %s VALUES (%s);" % (table_name, values))
+				self.db.commit()
+			except DatabaseError:
+				print "Error inserting into database using generated query."
 			return True
 		else:
 			# if here, we didn't get a query to run, so do what we need to...
