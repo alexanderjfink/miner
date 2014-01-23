@@ -192,6 +192,7 @@ div.content {
   background: none repeat scroll 0 0 #fff;
   font-size: 13.1pt;
   line-height: 1.75;
+  margin-top: 30px;
 }
 
 div.content p,
@@ -222,6 +223,7 @@ div.showcase {
   background: url('../img/reddirt.jpg');
   padding: 2pc 0;
   font-size: 12pt;
+  margin-top: 0px !important;
   -moz-box-shadow:    inset 0 0 1px #999;
   -webkit-box-shadow: inset 0 0 1px #999;
   box-shadow:         inset 0 0 1px #999;

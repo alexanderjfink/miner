@@ -1,0 +1,22 @@
+{
+  "name": "miner.github.io",
+  "version": "0.1.0",
+  "homepage": "http://alexanderjfink.github.io/miner",
+  "authors": [
+    "Alex Fink <alexanderjfink@gmail.com>"
+  ],
+  "description": "GitHub site for Miner app",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "jquery.smooth-scroll": "~1.4.13"
+  }
+}

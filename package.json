@@ -1,0 +1,25 @@
+{
+  "name": "miner.github.io",
+  "version": "0.1.0",
+  "description": "Website for Miner app",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexanderjfink/miner.git"
+  },
+  "author": "Alex Fink <alexanderjfink@gmail.com>",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/alexanderjfink/miner/issues"
+  },
+  "homepage": "https://github.com/alexanderjfink/miner",
+  "dependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-bowercopy": "~0.7.1"
+  }
+}
