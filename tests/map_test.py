@@ -61,30 +61,42 @@ class TestSQLMap(unittest.TestCase):
 
 	def test_download(self):
 		""" Should pass if download completes and dataset resides in tmp/[Map] """
+		self.test_map.setup() # make sure order works
 		self.test_map.download()
 
 		self.assertEqual(os.path.exists(TMP_DIRECTORY + "Map/testdata.csv"), True)
 
 	def test_unpack(self):
 		""" Should pass if files exist on disk """
+		self.test_map.setup()
+		self.test_map.download()
 		self.test_map.unpack()
 
 		self.assertEqual(os.path.exists(TMP_DIRECTORY + "Map/testdata/testdata.csv"), True)
 
 	def test_install(self):
 		""" Should pass if data gets inserted into SQL database """
+		self.test_map.setup()
+		self.test_map.download()
+		self.test_map.unpack()
+
+
 		self.test_map.install(drop_if_exists=True)
 
 		# self.db.query("SELECT * FROM ")
 
 	def test_cleanup(self):
 		""" Should pass if data created in download & unpack is deleted """
-		pass
+		self.test_map.setup()
+		self.test_map.download()
+		self.test_map.unpack()
+		self.test_map.install(drop_if_exists=True)
+
+		self.test_map.cleanup()
 
 	def tearDown(self):
 		""" Destroy fake dataset and database changes (if any) """
 		pass
-		# shutil.rmtree(TMP_DIRECTORY + "TestMap")
 
 class TestDocstoreMap():
 	pass

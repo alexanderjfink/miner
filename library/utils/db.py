@@ -116,7 +116,7 @@ class DBConnect:
 
 	def close(self):
 		""" Call to close database """
-		self.__del__()
+		self.db.__del__()
 
 	def __del__(self):
 		""" Make sure not to leave the database hanging -- commit anything left over and close it down """

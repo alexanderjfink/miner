@@ -87,8 +87,7 @@ class Map:
 		try:
 			os.chdir(TMP_DIRECTORY + '%s' % self.__class__.__name__)
 		except OSError:
-			self.setup() # first try running setup - these shouldn't be run outta order
-			print "Directory change failure. Please check TMP_DIRECTORY & PROJECT_ROOT settings. Or don't execute this method out of order"
+			print "Directory change failure. Please check TMP_DIRECTORY & PROJECT_ROOT settings."
 
 		# need an iterator to download what is either a single page or a load of files, but that should get specified.
 		# this should be the easiest one to write
@@ -107,10 +106,8 @@ class Map:
 		try:
 			# not the most elegant solution, but these methods shouldn't be executed out of order
 			os.chdir(TMP_DIRECTORY + '%s' % self.__class__.__name__)
-			os.listdir(TMP_DIRECTORY + '%s' % self.__class__.__name__)
 		except OSError:
-			self.download() # chain upwards
-			print "Directory change failure. Please check TMP_DIRECTORY & PROJECT_ROOT settings. Or don't execute this method out of order"
+			print "Directory change failure. Please check TMP_DIRECTORY & PROJECT_ROOT settings."
 
 		# need to check what file type we've got now...
 		file_types = {
@@ -259,9 +256,14 @@ class Map:
 			print "Cleaning up folders and closing DB connections..."
 		
 		# need to delete all the files in tmp/thismap
-		os.chdir('../')
-		shutil.rmtree(self.__class__.__name__)
+		try:
+			os.removedirs(TMP_DIRECTORY + '%s' % self.__class__.__name__)
+		except OSError:
+			print "Removing temporary directory failed. Attempt to do manually if you want to clean up space on your hard drive."
 
-		# close DB connection
-		self.db.close()
+		try:
+			# close DB connection
+			self.db.close()
+		except:
+			print "Error closing the database!"
 	
